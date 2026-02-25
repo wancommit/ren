@@ -1,0 +1,1 @@
+A RESTful CRUD application designed to track deliberate practice sessions and visualize time spent on skill acquisition.
