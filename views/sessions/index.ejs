@@ -1,0 +1,8 @@
+<% layout('layouts/boilerplate') %>
+    <h1>All Training Sessions</h1>
+    <ul>
+        <% for(let session of sessions) { %>
+            <li><%= session.title %> - <%= session.duration %> mins</li>
+        <% } %>
+    </ul>
+    <a href="/sessions/new">Add New Session</a>
