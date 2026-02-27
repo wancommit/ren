@@ -1,0 +1,52 @@
+<% layout('layouts/boilerplate') %>
+
+<script>document.body.classList.add('home-page');</script>
+
+<section class="hero-container d-flex align-items-center" 
+         style="min-height: 100vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('<%= bgImage %>') center/cover no-repeat fixed;">
+
+    <div class="position-absolute top-0 end-0 p-5 text-end" style="max-width: 350px;">
+        <small class="text-uppercase opacity-40 d-block mb-2" style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 2px;">
+            > DAILY_DIRECTIVE
+        </small>
+        <p class="text-white opacity-60 italic" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; line-height: 1.4;">
+            Focus on the path, not the finish line. The science of high performance is the science of saying 'no.'
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 text-white">
+                <h1 class="display-2 fw-500 mb-5" style="line-height: 1; letter-spacing: -2px; font-family: 'Geist Mono', monospace;">
+                    WELCOME_BACK, <br> 
+                    <span style="opacity: 0.6;">IDENT_USER_01.</span>
+                </h1>
+
+                <div class="d-flex flex-wrap gap-4">
+                    <a href="/dashboard" class="btn btn-solid px-5 py-3 text-uppercase">
+                        INITIALIZE_DASHBOARD
+                    </a>
+                    
+                    <a href="/sessions/new/select" class="btn btn-solid-dark px-5 py-3 text-uppercase">
+                        LOG_ACTIVE_SESSION
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-absolute bottom-0 start-0 w-100 p-5">
+        <div class="container">
+            <div class="row border-top border-white border-opacity-10 pt-4">
+                <div class="col-6 col-md-3">
+                    <small class="text-uppercase opacity-40 d-block mb-1" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem; letter-spacing: 1px;">> FOCUS_TYPE</small>
+                    <span class="fw-regular text-white opacity-80" style="font-family: 'Geist Mono', monospace; font-size: 0.85rem;">THE_TRIPTYCH</span>
+                </div>
+                <div class="col-6 col-md-3">
+                    <small class="text-uppercase opacity-40 d-block mb-1" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem; letter-spacing: 1px;">> SESSION_LOAD</small>
+                    <span class="fw-regular text-white opacity-80" style="font-family: 'Geist Mono', monospace; font-size: 0.85rem;">1_ROCK // 2_HABITS</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

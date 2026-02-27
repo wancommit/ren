@@ -2,25 +2,47 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const SessionSchema = new Schema({
-    title:{
+    // THE LINK: Connects to the Monthly Big Rock
+    goal: {
+        type: Schema.Types.ObjectId,
+        ref: 'Goal',
+        required: [true, 'Session must be linked to an active Goal']
+    },
+    // THE SLOT: Redundant but critical for high-speed filtering in History
+    slot: {
         type: String,
-        required:true //Prevent empty logs
+        required: true,
+        enum: ['engineer', 'athlete', 'thinker']
     },
-    category:{
+    title: {
         type: String,
-        enum:['Coding', 'Fitness', 'Reading', 'Writing', 'Drawing', 'Meditation', 'Other'],
-        required:true
+        required: [true, 'What did you achieve?'],
+        trim: true
     },
-    duration:{
-        type:Number,
-        min:1 // You can't learn for 0 minutes :-)
+    duration: {
+        type: Number,
+        min: [1, 'Minimum duration is 1 minute'],
+        required: true 
     },
-    description: String,
+    description: {
+        type: String,
+        trim: true
+    },
     date: {
         type: Date,
-        defualt: Date.now // Automatically logs today's date
+        default: Date.now,
+        // Ensures you can't log sessions in the future
+        max: [Date.now, 'Cannot log work for the future']
     }
+}, { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
+// VIRTUAL XP: 1 min = 10 XP
+SessionSchema.virtual('xpEarned').get(function() {
+    return this.duration * 10;
+});
 
 module.exports = mongoose.model('Session', SessionSchema);

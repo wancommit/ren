@@ -1,0 +1,98 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row justify-content-center mt-lg-5 pt-lg-5">
+    <div class="col-md-5">
+        
+        <header class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <small class="text-uppercase opacity-50 font-gaming" style="letter-spacing: 2px;">
+                    > INITIALIZING_LOG_SESSION
+                </small>
+                <span class="badge rounded-0 border border-dark text-dark fw-bold px-2 py-1 font-gaming small">
+                    [<%= slot.toUpperCase() %>_SLOT]
+                </span>
+            </div>
+            
+         <h2 class="fw-500 mb-2" style="font-family: 'Geist Mono', monospace; letter-spacing: -1px; line-height: 1;">
+    <%= goal.title.toUpperCase() %>
+</h2>
+            <p class="opacity-50 small font-gaming text-uppercase">REN_V1.0 // UPLOADING_TO_CORE</p>
+        </header>
+
+        <form action="/sessions" method="POST" id="log-form" novalidate>
+            <input type="hidden" name="session[goalId]" value="<%= goal._id %>">
+            <input type="hidden" name="session[slot]" value="<%= slot %>">
+
+           <div class="mb-5">
+        <label class="text-uppercase opacity-50 small d-block mb-3 font-gaming">IDENTIFY_ACHIEVEMENT</label>
+        <input type="text" 
+               name="session[title]" 
+               class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none" 
+               style="font-size: 1.25rem;"
+               placeholder="e.g., REFINED_CSS_GRID" 
+               autofocus required>
+    </div>
+
+            <div class="mb-5">
+                <label class="text-uppercase opacity-50 small d-block mb-3 font-gaming">TIME_EXPENDED (MINS)</label>
+                <input type="number" 
+                       name="session[duration]" 
+                       class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none font-gaming" 
+                       style="font-size: 1.25rem;"
+                       placeholder="45" 
+                       required>
+            </div>
+
+            <div class="mb-5">
+                <label class="text-uppercase opacity-50 small d-block mb-3 font-gaming">REMARKS_OPTIONAL</label>
+                <textarea name="session[description]" 
+                          class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none" 
+                          placeholder="Document your thought process..."
+                          rows="2"></textarea>
+            </div>
+
+            <div class="d-flex align-items-center gap-4 pt-4">
+                <button type="submit" class="btn btn-solid-dark px-5 py-3 text-uppercase font-gaming fw-bold">
+                    EXECUTE_LOG [+10_XP]
+                </button>
+                <a href="/dashboard" class="text-dark opacity-40 text-decoration-none small text-uppercase font-gaming">
+                    [ ABORT_MISSION ]
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(255,255,255,0.95); z-index: 9999;">
+    <div class="text-center font-gaming">
+        <h2 class="fw-800 mb-4">> UPLOADING_XP...</h2>
+        <div class="border border-2 border-dark p-1 mb-4" style="width: 300px; height: 30px;">
+            <div id="loading-bar" class="bg-dark h-100" style="width: 0%;"></div>
+        </div>
+        <p class="small fw-bold text-uppercase blink opacity-50">Synchronizing_with_Ren_Core</p>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('log-form');
+    const overlay = document.getElementById('loading-overlay');
+    const bar = document.getElementById('loading-bar');
+
+    form.addEventListener('submit', function() {
+        // Disable the button to prevent double-logging XP
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerText = "UPLOADING...";
+
+        overlay.classList.remove('d-none');
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+            } else {
+                width += 2;
+                bar.style.width = width + '%';
+            }
+        }, 30);
+    });
+</script>

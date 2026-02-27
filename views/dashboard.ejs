@@ -1,0 +1,135 @@
+<% layout('layouts/boilerplate') %>
+
+<% 
+   let totalPercent = 0;
+   let activeSlots = 0;
+   for (let key in triptych) {
+       if (triptych[key]) {
+           totalPercent += triptych[key].percent;
+           activeSlots++;
+       }
+   }
+   const averageProgress = activeSlots > 0 ? (totalPercent / activeSlots) : 0;
+%>
+
+<% if (activeSlots > 0 && averageProgress >= 100) { %>
+    <div class="alert alert-dark rounded-0 font-gaming mb-4 border-success animate__animated animate__pulse">
+        > ALL_SYSTEMS_OPTIMAL // TRIPTYCH_COMPLETE // ASCENSION_READY
+    </div>
+<% } %>
+
+<% if (activeSlots === 0) { %>
+    <div class="row mb-5 animate__animated animate__fadeIn">
+        <div class="col-12">
+            <div class="p-5 border border-dark border-opacity-10 text-center bg-light bg-opacity-50">
+                <h3 class="font-gaming fw-800 mb-3 text-uppercase">System_Empty // No_Active_Protocols</h3>
+                <p class="opacity-50 small font-gaming mb-4">Initialization is required to begin XP accumulation.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/goals/new" class="btn btn-dark rounded-0 px-5 py-3 font-gaming fw-bold shadow-sm">
+                        [ INITIALIZE_SYSTEM_LOADOUT ]
+                    </a>
+                </div>
+                <div class="mt-4 opacity-20 small font-gaming blink">WAITING_FOR_INPUT...</div>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<header class="py-4 d-flex justify-content-between align-items-center border-bottom border-dark border-opacity-10 mb-4">
+    <div class="font-gaming">
+        <h2 class="h5 fw-800 mb-0"><%= now.toLocaleString('default', { month: 'long' }).toUpperCase() %>_TRIPTYCH</h2>
+        <div class="opacity-50 small mt-1">
+            LVL_<%= Math.floor(totalXP / 1000) + 1 %> // 
+            <%= totalXP %>_XP // 
+            <% if (streak >= 3) { %><span class="text-danger">🔥_STREAK_<%= streak %>_D</span><% } else { %>STREAK_<%= streak %>_D<% } %>
+        </div>
+    </div>
+    <div class="text-end">
+        <a href="/sessions/new/select" class="btn btn-solid-dark py-2 px-4 small font-gaming text-decoration-none">NEW_LOG</a>
+    </div>
+</header>
+
+<section class="row align-items-center mb-5">
+    <div class="col-md-2 d-flex flex-column align-items-center justify-content-center">
+       <div class="ren-spirit <%= streak >= 3 ? 'on-fire' : '' %> <%= (activeSlots > 0 && averageProgress >= 100) ? 'vibe-maxed' : '' %>" 
+            style="--glow-strength: <%= 10 + (averageProgress * 0.4) %>px;">
+       </div>
+       <div class="font-gaming small opacity-30 mt-3" style="font-size: 0.6rem;">VIBE_<%= Math.round(averageProgress) %>%</div>
+    </div>
+
+    <div class="col-md-10 border-start border-dark border-opacity-10 ps-md-4">
+        <div class="d-flex justify-content-between align-items-start">
+            <% if (triptych.engineer) { %>
+                <div class="flex-grow-1">
+                    <small class="font-gaming opacity-40 d-block mb-1">> THE_BIG_ROCK [ENGINEER]</small>
+                    <h2 class="display-6 fw-500 mb-0">
+                        <%= triptych.engineer.title %> 
+                        <% if (triptych.engineer.percent >= 100) { %> <span class="text-success small">✓</span> <% } %>
+                    </h2>
+                </div>
+                
+                <div class="text-end font-gaming" style="min-width: 180px;">
+                    <a href="/sessions/new?slot=engineer" class="btn btn-dark btn-sm rounded-0 fw-800 text-uppercase d-inline-block mb-3 px-3 py-2 border-0 shadow-sm">
+                        [+] EXECUTE_LOG
+                    </a>
+                    <div class="h3 mb-0"><%= triptych.engineer.percent %>%</div>
+                    <div class="progress rounded-0 bg-light" style="height: 3px;">
+                        <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.engineer.percent, 100) %>%"></div>
+                    </div>
+                    <small class="opacity-40 d-block mt-1" style="font-size: 0.7rem;"><%= triptych.engineer.current %> / <%= triptych.engineer.target %>_MINS</small>
+                </div>
+            <% } else { %>
+                <div class="flex-grow-1 py-3">
+                    <a href="/goals/new?slot=engineer" class="d-block py-4 text-center text-decoration-none text-muted opacity-50 font-gaming small border border-dashed">
+                        + INITIALIZE_ENGINEER_PROTOCOL_>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="p-4 border border-dark border-opacity-10">
+            <h5 class="font-gaming small opacity-50 mb-4">> HABIT_I [ATHLETE]</h5>
+            <% if (triptych.athlete) { %>
+                <h4 class="fw-500 mb-2"><%= triptych.athlete.title %></h4>
+                <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
+                    <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.athlete.percent, 100) %>%"></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="font-gaming small opacity-50"><%= triptych.athlete.percent %>%_VIBE</span>
+                    <a href="/sessions/new?slot=athlete" class="btn btn-dark btn-sm rounded-0 font-gaming px-3 py-1 text-uppercase" style="font-size: 0.7rem;">EXECUTE_LOG_></a>
+                </div>
+            <% } else { %>
+                <a href="/goals/new?slot=athlete" class="d-block py-3 text-center text-decoration-none text-muted opacity-50 font-gaming small border border-dashed">+ SET_ATHLETE_STANDARD</a>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="p-4 border border-dark border-opacity-10">
+            <h5 class="font-gaming small opacity-50 mb-4">> HABIT_II [THINKER]</h5>
+            <% if (triptych.thinker) { %>
+                <h4 class="fw-500 mb-2"><%= triptych.thinker.title %></h4>
+                <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
+                    <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.thinker.percent, 100) %>%"></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="font-gaming small opacity-50"><%= triptych.thinker.percent %>%_VIBE</span>
+                    <a href="/sessions/new?slot=thinker" class="btn btn-dark btn-sm rounded-0 font-gaming px-3 py-1 text-uppercase" style="font-size: 0.7rem;">EXECUTE_LOG_></a>
+                </div>
+            <% } else { %>
+                <a href="/goals/new?slot=thinker" class="d-block py-3 text-center text-decoration-none text-muted opacity-50 font-gaming small border border-dashed">+ SET_THINKER_STANDARD</a>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<% if (activeSlots > 0 && averageProgress >= 100) { %>
+    <div class="mt-5 pt-5 border-top border-dark border-opacity-10 text-center">
+        <p class="font-gaming small opacity-50 mb-3">> ALL_OBJECTIVES_MET // PREPARING_NEW_CYCLE</p>
+        <a href="/goals/new" class="btn btn-outline-success px-5 py-3 rounded-0 font-gaming fw-bold">INITIALIZE_NEXT_MONTH_PROTOCOL</a>
+    </div>
+<% } %>

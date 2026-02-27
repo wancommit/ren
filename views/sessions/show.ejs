@@ -1,0 +1,92 @@
+<% layout('layouts/boilerplate') %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb small">
+                    <li class="breadcrumb-item"><a href="/sessions" class="text-muted text-decoration-none">Activity
+                            Log</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Session Details</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm p-4 p-md-5">
+                <div class="mb-4">
+                    <span class="badge rounded-pill bg-light text-dark border px-3 py-2 mb-3">
+                        <%= session.category %>
+                    </span>
+                    <h1 class="display-6 fw-800 mb-2">
+                        <%= session.title %>
+                    </h1>
+                    <p class="text-muted font-monospace small">
+                        Logged on <%= new Date(session.date).toLocaleDateString('en-US', { weekday: 'long' ,
+                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                    </p>
+                </div>
+
+                <div class="mb-5">
+                    <h6 class="text-uppercase fw-700 small text-muted mb-3" style="letter-spacing: 1px;">Description
+                    </h6>
+                    <p class="text-secondary">
+                        <%= session.description || "No description provided for this session." %>
+                    </p>
+                </div>
+
+                <div class="row border-top pt-4">
+                    <div class="col-6">
+                        <h6 class="text-uppercase fw-700 small text-muted mb-1">Time Invested</h6>
+                        <p class="h4 fw-600">
+                            <%= session.duration %>m
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-uppercase fw-700 small text-muted mb-1">XP Earned</h6>
+                        <p class="h4 fw-600 text-primary">+<%= session.duration * 10 %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="/sessions/<%= session._id %>/edit"
+                            class="btn btn-outline-dark btn-sm px-4 me-2">Edit</a>
+                        <a href="/sessions" class="btn btn-link btn-sm text-muted text-decoration-none">Back</a>
+                    </div>
+
+                    <form id="deleteForm" action="/sessions/<%= session._id %>?_method=DELETE" method="POST"
+                        class="d-inline">
+                        <button type="button" onclick="confirmDelete()"
+                            class="btn btn-link btn-sm text-danger text-decoration-none opacity-75 hover-opacity-100">
+                            Delete Session
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .hover-opacity-100:hover {
+            opacity: 1 !important;
+        }
+    </style>
+
+    <script>
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This session's XP will be removed from your dashboard.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#000',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm').submit();
+                }
+            })
+        }
+    </script>

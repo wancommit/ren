@@ -1,0 +1,30 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row justify-content-center mt-lg-5">
+    <div class="col-md-6 text-center">
+        <header class="mb-5">
+            <small class="font-gaming opacity-50 text-uppercase" style="letter-spacing: 3px;">
+                > SELECT_ACTIVE_IDENTITY
+            </small>
+            <h1 class="display-4 fw-800 mt-2" style="letter-spacing: -2px;">CHOOSE_TARGET</h1>
+        </header>
+
+        <div class="d-grid gap-3">
+            <a href="/sessions/new?slot=engineer" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
+                [01] // ACTIVATE_ENGINEER
+            </a>
+            <a href="/sessions/new?slot=athlete" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
+                [02] // ACTIVATE_ATHLETE
+            </a>
+            <a href="/sessions/new?slot=thinker" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
+                [03] // ACTIVATE_THINKER
+            </a>
+        </div>
+
+        <div class="mt-5">
+            <a href="/dashboard" class="text-decoration-none text-muted small font-gaming text-uppercase opacity-50">
+                [ ABORT_SELECTION ]
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row justify-content-center mt-lg-5">
+    <div class="col-md-6">
+        <header class="mb-5 text-center font-gaming">
+            <small class="opacity-50 text-uppercase" style="letter-spacing: 3px;">
+                > MODIFY_SESSION_DATA [ID: <%= session._id.toString().slice(-6) %>]
+            </small>
+            <h1 class="display-4 fw-800 mt-2" style="letter-spacing: -2px;">EDIT_PROTOCOL</h1>
+        </header>
+
+        <form action="/sessions/<%= session._id %>?_method=PUT" method="POST" class="mb-3">
+            <div class="mb-4">
+                <label class="font-gaming small opacity-50 text-uppercase mb-2">> IDENTIFY_ACHIEVEMENT</label>
+                <input type="text" name="session[title]" 
+                       class="form-control form-control-lg bg-transparent border-0 border-bottom border-dark rounded-0 px-0 fw-bold shadow-none" 
+                       value="<%= session.title %>" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="font-gaming small opacity-50 text-uppercase mb-2">> TIME_EXPENDED (MINS)</label>
+                <input type="number" name="session[duration]" 
+                       class="form-control form-control-lg bg-transparent border-0 border-bottom border-dark rounded-0 px-0 fw-bold shadow-none" 
+                       value="<%= session.duration %>" required>
+            </div>
+
+            <div class="mb-5">
+                <label class="font-gaming small opacity-50 text-uppercase mb-2">> REMARKS_OPTIONAL</label>
+                <textarea name="session[description]" 
+                          class="form-control bg-light border-0 rounded-0 p-3" 
+                          rows="3"><%= session.description %></textarea>
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-dark py-3 font-gaming fw-bold text-uppercase rounded-0">
+                    UPDATE_CORE_DATA
+                </button>
+            </div>
+        </form> <hr class="my-4 opacity-10">
+
+        <form action="/sessions/<%= session._id %>?_method=DELETE" method="POST" 
+              onsubmit="return confirm('WARNING: Permanent data purge. Goal progress will be rolled back. Proceed?')">
+            <div class="d-grid">
+                <button class="btn btn-outline-danger py-2 font-gaming small text-uppercase rounded-0 border-0 opacity-50">
+                    [ ! ]_PURGE_SESSION_FROM_MEMORY
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="/dashboard" class="text-decoration-none text-muted small font-gaming text-uppercase opacity-50">
+                [ ABORT_CHANGES ]
+            </a>
+        </div>
+    </div>
+</div>

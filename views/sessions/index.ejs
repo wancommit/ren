@@ -1,8 +1,82 @@
 <% layout('layouts/boilerplate') %>
-    <h1>All Training Sessions</h1>
-    <ul>
-        <% for(let session of sessions) { %>
-            <li><%= session.title %> - <%= session.duration %> mins</li>
-        <% } %>
-    </ul>
-    <a href="/sessions/new">Add New Session</a>
+    <% if (typeof activeFilter==='undefined' ) { var activeFilter=null; } %>
+        <div class="mt-lg-5">
+            <header class="mb-5">
+                <div
+                    class="d-flex justify-content-between align-items-end mb-4 border-bottom border-dark border-opacity-10 pb-4">
+                    <div>
+                        <small class="text-uppercase opacity-50 d-block mb-1"
+                            style="font-family: 'Geist Mono', monospace; letter-spacing: 2px;">> SYSTEM_ARCHIVE</small>
+                        <h1 class="fw-500 mb-0" style="font-family: 'Geist Mono', monospace; letter-spacing: -2px;">
+                            LOG_HISTORY</h1>
+                    </div>
+                    <a href="/dashboard" class="text-dark text-decoration-none font-gaming small">[ RETURN_TO_BASE ]</a>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="/sessions"
+                        class="btn btn-solid <%= !activeFilter ? 'btn-solid-dark' : '' %> btn-sm px-3 small font-gaming">ALL</a>
+                    <a href="/sessions?slot=engineer"
+                        class="btn btn-solid <%= activeFilter === 'engineer' ? 'btn-solid-dark' : '' %> btn-sm px-3 small font-gaming">ENGINEER</a>
+                    <a href="/sessions?slot=athlete"
+                        class="btn btn-solid <%= activeFilter === 'athlete' ? 'btn-solid-dark' : '' %> btn-sm px-3 small font-gaming">ATHLETE</a>
+                    <a href="/sessions?slot=thinker"
+                        class="btn btn-solid <%= activeFilter === 'thinker' ? 'btn-solid-dark' : '' %> btn-sm px-3 small font-gaming">THINKER</a>
+                </div>
+            </header>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead class="border-bottom border-dark border-opacity-10">
+                        <tr class="font-gaming opacity-40 small">
+                            <th class="py-3">TIMESTAMP</th>
+                            <th>IDENTITY_SLOT</th>
+                            <th>DATA_ENTRY</th>
+                            <th>XP_VALUE</th>
+                            <th class="text-end">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let session of sessions) { %>
+                            <tr class="border-bottom border-dark border-opacity-5">
+                                <td class="font-gaming small opacity-50">
+                                    <%= session.date.toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <span class="text-uppercase fw-800 small" style="letter-spacing: 1px;">
+                                        [<%= (session.slot || 'NA' ) %>]
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-500">
+                                        <%= session.title %>
+                                    </div>
+                                    <% if (session.description) { %>
+                                        <div class="small opacity-50 font-italic mt-1">> <%= session.description %>
+                                        </div>
+                                        <% } %>
+                                </td>
+                                <td class="font-gaming fw-800">+<%= session.duration * 10 %>_XP</td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/sessions/<%= session._id %>/edit"
+                                            class="btn btn-outline-dark btn-sm rounded-0 font-gaming py-1 px-2"
+                                            style="font-size: 0.7rem;">
+                                            [ EDIT ]
+                                        </a>
+                                        <form action="/sessions/<%= session._id %>?_method=DELETE" method="POST"
+                                            onsubmit="return confirm('PURGE DATA?')">
+                                            <button
+                                                class="btn btn-outline-danger btn-sm rounded-0 font-gaming py-1 px-2"
+                                                style="font-size: 0.7rem;">
+                                                [ PURGE ]
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
