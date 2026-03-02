@@ -130,3 +130,12 @@ const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`[SYSTEM_ONLINE]: Port ${PORT}`);
 });
+
+
+
+// if (process.env.NODE_ENV !== 'production') {
+//   const PORT = 3000;
+//   app.listen(PORT, () => {
+//     console.log(`Local server running at http://localhost:${PORT}`);
+//   });
+// }
