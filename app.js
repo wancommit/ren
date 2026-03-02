@@ -13,7 +13,9 @@ const goalRoutes = require('./routes/goals');
 const app = express();
 
 // 2. DATABASE CONNECTION
-mongoose.connect('mongodb://127.0.0.1:27017/ren')
+const dbUrl = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/ren';
+
+mongoose.connect(dbUrl)
     .then(() => console.log("CORE_CONNECTED: Database online"))
     .catch(err => console.log("CORE_ERROR:", err));
 
@@ -126,16 +128,10 @@ app.use('/goals', goalRoutes);
 
 
 // 6. START SERVER
-const PORT = 4000;
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`[SYSTEM_ONLINE]: Port ${PORT}`);
 });
 
 
-
-// if (process.env.NODE_ENV !== 'production') {
-//   const PORT = 3000;
-//   app.listen(PORT, () => {
-//     console.log(`Local server running at http://localhost:${PORT}`);
-//   });
-// }
