@@ -16,7 +16,7 @@
          <h2 class="fw-500 mb-2" style="font-family: 'Geist Mono', monospace; letter-spacing: -1px; line-height: 1;">
     <%= goal.title.toUpperCase() %>
 </h2>
-            <p class="opacity-50 small font-gaming text-uppercase">REN_V1.0 // UPLOADING_TO_CORE</p>
+            <!-- <p class="opacity-50 small font-gaming text-uppercase">REN_V1.0 // UPLOADING_TO_CORE</p> -->
         </header>
 
         <form action="/sessions" method="POST" id="log-form" novalidate>
@@ -24,21 +24,21 @@
             <input type="hidden" name="session[slot]" value="<%= slot %>">
 
            <div class="mb-5">
-        <label class="text-uppercase opacity-50 small d-block mb-3 font-gaming">IDENTIFY_ACHIEVEMENT</label>
+        <label class="text-uppercase small d-block mb-3 font-gaming">IDENTIFY_ACHIEVEMENT</label>
         <input type="text" 
                name="session[title]" 
-               class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none" 
-               style="font-size: 1.25rem;"
-               placeholder="e.g., REFINED_CSS_GRID" 
+               class="form-control bg-transparent text-dark  border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none" 
+               style="font-size: 1rem;"
+               placeholder="e.g., Refined CSS layout for project page" 
                autofocus required>
     </div>
 
             <div class="mb-5">
-                <label class="text-uppercase opacity-50 small d-block mb-3 font-gaming">TIME_EXPENDED (MINS)</label>
+                <label class="text-uppercase small d-block mb-3 font-gaming">TIME_EXPENDED (MINS)</label>
                 <input type="number" 
                        name="session[duration]" 
-                       class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none font-gaming" 
-                       style="font-size: 1.25rem;"
+                       class="form-control bg-transparent text-dark border-0 border-bottom border-dark px-0 py-2 rounded-0 shadow-none" 
+                       style="font-size: 1rem;"
                        placeholder="45" 
                        required>
             </div>
