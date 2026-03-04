@@ -19,7 +19,7 @@
             <!-- <p class="opacity-50 small font-gaming text-uppercase">REN_V1.0 // UPLOADING_TO_CORE</p> -->
         </header>
 
-        <form action="/sessions" method="POST" id="log-form" novalidate>
+        <form action="/sessions" method="POST" id="log-form" novalidate class="validated-form">
             <input type="hidden" name="session[goalId]" value="<%= goal._id %>">
             <input type="hidden" name="session[slot]" value="<%= slot %>">
 
@@ -31,6 +31,7 @@
                style="font-size: 1rem;"
                 placeholder="What did you accomplish?" 
                autofocus required>
+               
     </div>
 
             <div class="mb-5">
@@ -74,25 +75,44 @@
 </div>
 
 <script>
+(() => {
+    'use strict'
+
     const form = document.getElementById('log-form');
     const overlay = document.getElementById('loading-overlay');
     const bar = document.getElementById('loading-bar');
+    const submitBtn = form.querySelector('button[type="submit"]');
 
-    form.addEventListener('submit', function() {
-        // Disable the button to prevent double-logging XP
-        const btn = form.querySelector('button[type="submit"]');
-        btn.disabled = true;
-        btn.innerText = "UPLOADING...";
+    form.addEventListener('submit', event => {
+        // 1. Check if the form is valid according to Bootstrap/HTML5 rules
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Add Bootstrap's validation styles so the user sees the errors
+            form.classList.add('was-validated');
+        } else {
+            // 2. FORM IS VALID - Now we run your custom UI logic
+            form.classList.add('was-validated');
 
-        overlay.classList.remove('d-none');
-        let width = 0;
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-            } else {
-                width += 2;
-                bar.style.width = width + '%';
-            }
-        }, 30);
-    });
+            // Disable button to prevent double-logging
+            submitBtn.disabled = true;
+            submitBtn.innerText = "UPLOADING...";
+
+            // Show and animate the loading overlay
+            overlay.classList.remove('d-none');
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width += 2;
+                    bar.style.width = width + '%';
+                }
+            }, 30);
+        }
+    }, false);
+})();
 </script>
+
+
