@@ -10,12 +10,11 @@
     --ren-fire: #ff4500;
 }
 
-/* Force edge-to-edge layout and crisp font rendering */
 html, body {
     margin: 0 !important;
     padding: 0 !important;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
@@ -24,68 +23,81 @@ body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--ren-bg);
     color: var(--ren-text);
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 /* ==========================================
    2. GLOBAL UI & TYPOGRAPHY
    ========================================== */
 
-/* Terminal-style headers and navigation */
 .navbar-brand, .nav-link, label, .btn, .font-gaming {
     font-family: 'Geist Mono', monospace !important;
     text-transform: uppercase;
     font-weight: 600;
 }
 
-/* Terminal prompt prefix for forms */
 label::before { content: "> "; color: #333; }
-
 .fw-800 { font-weight: 800; }
 .italic { font-style: italic; }
 .small-caps { letter-spacing: 2px; font-size: 0.85rem; }
+.ren-mono { font-family: 'Geist Mono', monospace !important; }
 
 /* ==========================================
-   3. NAVIGATION & HERO (LAYERED)
+   3. NAVIGATION
    ========================================== */
 
-/* Fixed Navbar with Glassmorphism */
 .navbar {
     z-index: 1050;
     transition: background 0.3s ease;
 }
 
-/* Home State: Transparent */
 .home-page .navbar {
     background-color: transparent !important;
     border-bottom: none !important;
 }
 
-.home-page .navbar .nav-link, .home-page .navbar .navbar-brand {
+.home-page .navbar .nav-link,
+.home-page .navbar .navbar-brand {
     color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* Standard State: Glass effect */
 body:not(.home-page) .navbar {
     background-color: rgba(255, 255, 255, 0.85) !important;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--ren-card-border);
 }
 
-/* Push content down on non-hero pages */
-body:not(.home-page) main { padding-top: 100px; }
+body:not(.home-page) main {
+    padding-top: 80px;
+}
 
-/* Hero Landing Section */
+/* ==========================================
+   4. HERO — FULL VIEWPORT BACKGROUND
+   ========================================== */
+
 .hero-container {
-    height: 100vh;
-    width: 100vw;
-    position: absolute; 
-    top: 0;
-    left: 0;
-    /* background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                url('/images/home-bg.jpg') center/cover no-repeat; */
+    min-height: 100vh;
+    width: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    position: relative;
     z-index: 1;
+    overflow: hidden;
+}
+
+/* Keep hero content above CRT overlays */
+.hero-container > * {
+    position: relative;
+    z-index: 5;
 }
 
 /* CRT Scanline Overlay */
@@ -93,27 +105,21 @@ body:not(.home-page) main { padding-top: 100px; }
     content: " ";
     display: block;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    /* This creates the horizontal line effect */
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    z-index: 2;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
     background-size: 100% 4px, 3px 100%;
-    pointer-events: none; /* Allows clicking through to buttons */
+    z-index: 2;
+    pointer-events: none;
 }
 
-/* Subtle Flicker Effect */
+/* CRT Flicker Overlay */
 .hero-container::before {
     content: " ";
     display: block;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 0; left: 0; bottom: 0; right: 0;
     background: rgba(18, 16, 16, 0.03);
     opacity: 0;
     z-index: 3;
@@ -122,17 +128,31 @@ body:not(.home-page) main { padding-top: 100px; }
 }
 
 @keyframes crt-flicker {
-    0% { opacity: 0.27; }
-    50% { opacity: 0.12; }
+    0%   { opacity: 0.27; }
+    50%  { opacity: 0.12; }
     100% { opacity: 0.35; }
 }
 
+@media (max-width: 768px) {
+    .hero-container {
+        min-height: 100svh;
+        background-attachment: scroll !important;
+        padding-top: 80px;
+    }
+
+    .hero-container h1 {
+        font-size: 2.5rem !important;
+        letter-spacing: -1px !important;
+    }
+}
+
 /* ==========================================
-   4. INTERACTIVE ELEMENTS (BUTTONS & CARDS)
+   5. BUTTONS
    ========================================== */
 
-/* Unified Gaming Button Style */
-.btn-solid, .btn-solid-dark, .action-trigger {
+.btn-solid,
+.btn-solid-dark,
+.action-trigger {
     border-radius: 0 !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     transition: all 0.2s ease-in-out;
@@ -145,15 +165,17 @@ body:not(.home-page) main { padding-top: 100px; }
 .btn-solid { background-color: rgba(255, 255, 255, 0.9) !important; color: #000 !important; }
 .btn-solid-dark, .action-trigger { background-color: rgba(0, 0, 0, 0.5) !important; color: #fff !important; }
 
-/* Hover States: Glow and Lift */
 .btn-solid:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); background-color: #fff !important; }
-.btn-solid-dark:hover, .action-trigger:hover { 
-    background-color: rgba(0, 0, 0, 0.8) !important; 
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); 
+.btn-solid-dark:hover, .action-trigger:hover {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
 
-/* Card Architectures: 2D HUD vs Floating Modern */
+/* ==========================================
+   6. CARDS
+   ========================================== */
+
 .card-2d {
     background: #fff;
     border: 3px solid #000;
@@ -163,24 +185,15 @@ body:not(.home-page) main { padding-top: 100px; }
 
 .card {
     border: 1px solid var(--ren-card-border);
-    border-radius: 20px; /* Modern App Feel */
+    border-radius: 20px;
     transition: all 0.3s ease;
     background: white;
 }
 
 .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05); }
 
-/* Identity Slots */
-.border-dashed {
-    border: 2px dashed #ced4da !important;
-    border-radius: 20px;
-    transition: all 0.2s;
-}
-
-.border-dashed:hover { background-color: #f1f3f5 !important; border-color: #212529 !important; }
-
 /* ==========================================
-   5. GAMIFICATION: THE SPIRIT ORB
+   7. GAMIFICATION: THE SPIRIT ORB
    ========================================== */
 
 .ren-spirit {
@@ -193,43 +206,135 @@ body:not(.home-page) main { padding-top: 100px; }
     animation: float 4s ease-in-out infinite;
 }
 
-/* Fire State (Streak 3+) */
 .ren-spirit.on-fire {
     background: radial-gradient(circle, #fff 0%, #ff8c00 70%, var(--ren-fire) 100%);
     box-shadow: 0 0 100px var(--ren-fire), 0 0 40px #ff8c00 inset;
 }
 
-/* Victory State (100% Completion) */
-.vibe-maxed {
-    filter: drop-shadow(0 0 20px rgba(0, 255, 150, 0.8)) !important;
-    border: 2px solid rgba(0, 255, 150, 1);
-    animation: pulse-victory 2s infinite;
-}
-
 /* ==========================================
-   6. ANIMATIONS
+   8. ANIMATIONS
    ========================================== */
 
 @keyframes float {
     0%, 100% { transform: translateY(0); filter: brightness(1); }
-    50% { transform: translateY(-10px); filter: brightness(1.2); }
+    50%       { transform: translateY(-10px); filter: brightness(1.2); }
 }
 
 @keyframes pulse-victory {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
+    50%       { transform: scale(1.1); opacity: 0.7; }
 }
 
 @keyframes terminal-blink { 0% { opacity: 0; } 100% { opacity: 1; } }
 .blink { animation: terminal-blink 0.8s infinite steps(2); }
 
 /* ==========================================
-   7. RESPONSIVE OVERRIDES
+   9. MODALS & HUD
    ========================================== */
-@media (max-width: 768px) {
-    .position-absolute.top-0.end-0 {
-        position: relative !important;
-        padding: 100px 20px 20px !important;
-        text-align: left !important;
-    }
+
+.ren-modal {
+    background-color: #0a0a0a !important;
+    border: 1px solid #222 !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.ren-modal::before {
+    content: " ";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(18, 16, 16, 0.05);
+    pointer-events: none;
+    z-index: 0;
+    animation: crt-flicker 0.15s infinite;
+}
+
+.ren-hud-border {
+    background-color: #000 !important;
+    border: 2px solid #333 !important;
+    border-radius: 0 !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.ren-hud-border::before {
+    content: " ";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(18, 16, 16, 0.05);
+    pointer-events: none;
+    z-index: 10;
+    animation: crt-flicker 0.15s infinite;
+}
+
+/* ==========================================
+   10. IDENTITY COMPONENTS
+   ========================================== */
+
+.ren-label {
+    font-family: 'Geist Mono', monospace !important;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.ren-input {
+    background: transparent !important;
+    border: 1px solid #444 !important;
+    border-radius: 0 !important;
+    color: var(--ren-glow) !important;
+    font-family: 'Geist Mono', monospace !important;
+    transition: all 0.3s ease;
+}
+
+.ren-input:focus {
+    border-color: var(--ren-glow) !important;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3) !important;
+    outline: none;
+}
+
+.ren-btn-execute {
+    font-family: 'Geist Mono', monospace !important;
+    background: transparent;
+    border: 1px solid var(--ren-glow);
+    color: var(--ren-glow);
+    border-radius: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 12px;
+    transition: all 0.3s ease;
+    width: 100%;
+    cursor: pointer;
+    letter-spacing: 2px;
+}
+
+.ren-btn-execute:hover {
+    background: var(--ren-glow);
+    color: #000;
+    box-shadow: 0 0 20px var(--ren-glow);
+}
+
+.ren-meta {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.65rem;
+    opacity: 0.6;
+    letter-spacing: 1px;
+}
+
+.ren-glow-text {
+    color: var(--ren-glow);
+    text-shadow: 0 0 8px var(--ren-glow);
+}
+
+.ren-terminal-alert {
+    background: rgba(255, 69, 0, 0.1);
+    border-left: 3px solid var(--ren-fire);
+    color: var(--ren-fire);
+    padding: 10px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
 }

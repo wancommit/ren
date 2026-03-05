@@ -1,14 +1,23 @@
+require('dotenv').config();
 const express = require('express');
 const engine = require('ejs-mate');
+const catchAsync = require ('./utils/catchAsync');
+const ExpressError = require ('./utils/ExpressError');
+const ensureAuth = require('./utils/ensureAuth');
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const session = require('express-session');       
+const passport = require('passport');             
+const flash = require('connect-flash');           
 
 // 1. MODELS & ROUTES
 const Session = require('./models/session');
 const Goal = require('./models/goal');
 const sessionRoutes = require('./routes/sessions');
 const goalRoutes = require('./routes/goals');
+const authRoutes = require('./routes/auth'); 
+// const ExpressError = require('./utils/ExpressError');
 
 const app = express();
 
@@ -28,10 +37,32 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method')); 
 app.use(express.static(path.join(__dirname, 'public')));
 
+//  Session config 
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'ren-secret',
+    resave: false,
+    saveUninitialized: false
+}));
+
+// ADD — Passport & Flash
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+require('./config/passport')(passport);
+
+// ADD — Make flash & user available in all views
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 // 4. CORE CONTROLLERS (Dashboard & Home)
 
 // Home Route: The Entry Point
-app.get('/', async (req, res) => {
+app.get('/', catchAsync(async (req, res) => {
     // 1. Dynamic Background Logic
     // This picks an image (1.jpg through 31.jpg) from your local folder
     const dayOfMonth = new Date().getDate(); 
@@ -52,10 +83,10 @@ app.get('/', async (req, res) => {
 
     // 3. Render with all necessary data
     res.render('home', { dailyPercent, bgImage });
-});
+}));
 
 // Dashboard: The Command Center (The Triptych Logic)
-app.get('/dashboard', async (req, res) => {
+app.get('/dashboard',ensureAuth, async (req, res) => {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
@@ -122,12 +153,33 @@ app.get('/dashboard', async (req, res) => {
     res.render('dashboard', { triptych, now, totalXP, streak });
 });
 
-// 5. EXTERNAL ROUTES
+
+
+
+// EXTERNAL ROUTES
 app.use('/sessions', sessionRoutes);
 app.use('/goals', goalRoutes);
+app.use('/auth', authRoutes);
 
 
-// 6. START SERVER
+
+// 404 Trigger
+app.all(/(.'*')/, (req, res, next) => { 
+    next(new ExpressError('Page Not Found', 404));
+});
+
+// Error Handling
+app.use((err,req,res,next)=>{
+      console.error(err.stack);
+    const {statusCode = 500,message = 'Something went wrong'} = err;
+    res.status(statusCode).send(message)
+   
+})
+
+
+
+
+// 7. START SERVER
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, "0.0.0.0", () => {
