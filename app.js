@@ -9,7 +9,8 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const session = require('express-session');       
 const passport = require('passport');             
-const flash = require('connect-flash');           
+const flash = require('connect-flash');       
+const MongoStore = require('connect-mongo').default;
 
 // 1. MODELS & ROUTES
 const Session = require('./models/session');
@@ -41,7 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'ren-secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/ren' })
 }));
 
 // ADD — Passport & Flash
