@@ -5,52 +5,76 @@ const User = require('../models/user');
 
 module.exports = (passport) => {
 
-    // --- LOCAL ---
+    // --- LOCAL STRATEGY ---
     passport.use(new LocalStrategy({ usernameField: 'email' },
         async (email, password, done) => {
-            const user = await User.findOne({ email });
-            if (!user) return done(null, false, { message: 'Email not registered' });
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) return done(null, false, { message: 'Incorrect password' });
-            return done(null, user);
+            try {
+                const user = await User.findOne({ email: email.toLowerCase() });
+                if (!user) return done(null, false, { message: 'Email not registered' });
+                
+                // If user registered via Google, they might not have a password
+                if (!user.password) return done(null, false, { message: 'Please log in with Google' });
+
+                const isMatch = await bcrypt.compare(password, user.password);
+                if (!isMatch) return done(null, false, { message: 'Incorrect password' });
+                
+                return done(null, user);
+            } catch (err) {
+                return done(err);
+            }
         }
     ));
 
-    // --- GOOGLE ---
+    // --- GOOGLE STRATEGY ---
     if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-        const callbackURL = process.env.NODE_ENV === 'production'
-            ? 'https://ren-production.up.railway.app/auth/google/callback'
-            : 'http://localhost:4000/auth/google/callback';
-
         passport.use(new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL
+            callbackURL: '/auth/google/callback', // Relative path is safer
+            proxy: true // Required for Railway/Heroku HTTPS
         },
         async (accessToken, refreshToken, profile, done) => {
-            let user = await User.findOne({ googleId: profile.id });
-            if (!user) {
-                user = await User.findOne({ email: profile.emails[0].value });
+            try {
+                // 1. Check if user already has this Google ID
+                let user = await User.findOne({ googleId: profile.id });
+                if (user) return done(null, user);
+
+                // 2. Check if email exists (maybe they signed up locally first)
+                const userEmail = profile.emails[0].value;
+                user = await User.findOne({ email: userEmail });
+
                 if (user) {
                     user.googleId = profile.id;
                     await user.save();
-                } else {
-                    user = await User.create({
-                        name: profile.displayName,
-                        email: profile.emails[0].value,
-                        googleId: profile.id
-                    });
+                    return done(null, user);
                 }
+
+                // 3. Brand New User: Must provide 'username' to match your new Model
+                user = await User.create({
+                    name: profile.displayName,
+                    email: userEmail,
+                    googleId: profile.id,
+                    // Generate a unique username (e.g., john_doe_1234)
+                    username: profile.displayName.replace(/\s+/g, '_').toLowerCase() + Math.floor(1000 + Math.random() * 9000)
+                });
+
+                return done(null, user);
+            } catch (err) {
+                return done(err);
             }
-            return done(null, user);
         }));
     } else {
-        console.warn('[PASSPORT] Google OAuth not configured — GOOGLE_CLIENT_ID missing');
+        console.warn('[PASSPORT] Google OAuth credentials missing. Strategy disabled.');
     }
 
     passport.serializeUser((user, done) => done(null, user.id));
+    
     passport.deserializeUser(async (id, done) => {
-        const user = await User.findById(id);
-        done(null, user);
+        try {
+            const user = await User.findById(id);
+            done(null, user);
+        } catch (err) {
+            done(err);
+        }
     });
 };

@@ -1,44 +1,41 @@
-<nav class="navbar navbar-expand-lg fixed-top">
+<nav class="navbar navbar-expand-lg fixed-top border-bottom border-dark border-opacity-10 py-3">
   <div class="container">
-    <a class="navbar-brand fw-800 fs-4" href="/">REN</a>
+    <a class="navbar-brand fw-800 fs-4 ren-mono" href="/">REN</a>
     
-    <button class="navbar-toggler border-0 btn-close-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
         <li class="nav-item">
-          <a class="nav-link ren-mono small" href="/sessions">Activity_Log</a>
+          <a class="nav-link ren-mono small text-uppercase" href="/sessions">History</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link ren-mono small" href="/dashboard">Terminal.Main</a>
+          <a class="nav-link ren-mono small text-uppercase" href="/dashboard">Dashboard</a>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-
         <% if (currentUser) { %>
-          <div class="d-flex flex-column align-items-end me-2">
-            <span class="ren-meta " style="font-size: 0.6rem;">STATUS: ONLINE</span>
-            <span class="ren-mono small fw-600">
-              <%= currentUser.username %>
-            </span>
+          <div class="ren-user-pill d-flex align-items-center px-3 py-2 bg-dark bg-opacity-10 border border-dark border-opacity-10">
+            <div class="d-flex flex-column align-items-end me-3">
+              <span class="ren-meta opacity-50" style="font-size: 0.55rem; letter-spacing: 1px;">USER_ACTIVE</span>
+              <span class="ren-mono small fw-800 text-uppercase" style="font-size: 0.75rem;">
+                <%= currentUser.username %>
+              </span>
+            </div>
+            <div class="user-avatar-dot bg-success shadow-sm" style="width: 6px; height: 6px; border-radius: 50%;"></div>
           </div>
-          <a href="/auth/logout" class="btn btn-sm btn-outline-danger ren-mono px-3" style="font-size: 0.7rem;">
-            TERMINATE_SESSION
-          </a>
-
-        <% } else { %>
-          <button class="nav-link ren-mono small border-0 bg-transparent p-0 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-            SIGN_IN
-          </button>
           
-          <button class="btn btn-sm btn-solid ren-mono px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#registerModal">
-            INITIALIZE
+          <a href="/auth/logout" class="btn btn-sm btn-outline-danger ren-mono px-3 rounded-0" style="font-size: 0.7rem; border-width: 1px;">
+            LOGOUT
+          </a>
+        <% } else { %>
+          <button class="btn btn-link text-decoration-none ren-mono small text-dark opacity-75 border-0 bg-transparent p-0 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+            LOGIN
           </button>
         <% } %>
-
       </div>
     </div>
   </div>

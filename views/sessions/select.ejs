@@ -1,29 +1,43 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row justify-content-center mt-lg-5">
-    <div class="col-md-6 text-center">
-        <header class="mb-5">
-            <small class="font-gaming opacity-50 text-uppercase" style="letter-spacing: 3px;">
-                > SELECT_ACTIVE_IDENTITY
-            </small>
-            <h1 class="display-6 fw-800 mt-2" style="letter-spacing: -2px;">CHOOSE_TARGET</h1>
-        </header>
+<div class="container py-5">
+    <div class="mb-5">
+        <p class="ren-label">> DATA_INPUT_REQUIRED</p>
+        <h2 class="display-4 fw-800 ren-mono">SELECT_PROTOCOL</h2>
+        <p class="opacity-50 ren-mono">Which subsystem are we optimizing today? Choose wisely; time is a non-renewable resource.</p>
+    </div>
 
-        <div class="d-grid gap-3">
-            <a href="/sessions/new?slot=engineer" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
-                [01] // ACTIVATE_ENGINEER
-            </a>
-            <a href="/sessions/new?slot=athlete" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
-                [02] // ACTIVATE_ATHLETE
-            </a>
-            <a href="/sessions/new?slot=thinker" class="btn btn-outline-dark py-4 font-gaming text-uppercase fw-bold border-2">
-                [03] // ACTIVATE_THINKER
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="/sessions/new?slot=engineer" class="text-decoration-none">
+                <div class="p-4 border border-dark border-opacity-10 h-100 transition-hover bg-black text-white">
+                    <small class="ren-mono opacity-40">01_PRIMARY</small>
+                    <h3 class="fw-800 ren-mono mt-2">ENGINEER</h3>
+                    <p class="small opacity-50 mt-3">Architect the foundation. Deep work and high-leverage outputs only.</p>
+                    <div class="mt-auto ren-mono text-end opacity-20">> INITIALIZE</div>
+                </div>
             </a>
         </div>
 
-        <div class="mt-5">
-            <a href="/dashboard" class="text-decoration-none text-muted small font-gaming text-uppercase opacity-50">
-                [ ABORT_SELECTION ]
+        <div class="col-md-4">
+            <a href="/sessions/new?slot=athlete" class="text-decoration-none text-dark">
+                <div class="p-4 border border-dark border-opacity-10 h-100 transition-hover">
+                    <small class="ren-mono opacity-40">02_SUBSYSTEM</small>
+                    <h3 class="fw-800 ren-mono mt-2">ATHLETE</h3>
+                    <p class="small opacity-50 mt-3">Maintain the hardware. A failing chassis cannot support the OS.</p>
+                    <div class="mt-auto ren-mono text-end opacity-20">> INITIALIZE</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/sessions/new?slot=thinker" class="text-decoration-none text-dark">
+                <div class="p-4 border border-dark border-opacity-10 h-100 transition-hover">
+                    <small class="ren-mono opacity-40">03_SUBSYSTEM</small>
+                    <h3 class="fw-800 ren-mono mt-2">THINKER</h3>
+                    <p class="small opacity-50 mt-3">Refine the logic. Garbage in, garbage out. Update your mental models.</p>
+                    <div class="mt-auto ren-mono text-end opacity-20">> INITIALIZE</div>
+                </div>
             </a>
         </div>
     </div>

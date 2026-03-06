@@ -1,50 +1,74 @@
 const express = require('express');
 const router = express.Router();
 const Goal = require('../models/goal');
+const ensureAuth = require('../utils/ensureAuth');
 
-// 1. GET NEW GOAL FORM
-// We now pass the 'slot' via a query string (e.g., /goals/new?slot=engineer)
+// GLOBAL LOCK: No one gets past this point without an ID
+router.use(ensureAuth);
+
+/**
+ * 1. GET NEW GOAL FORM
+ */
 router.get('/new', (req, res) => {
-    // Get the slot from the URL query
     const { slot } = req.query; 
-    // Pass slot to the view so EJS can show identity-specific prompts
-    res.render('goals/new', { slot }); 
+    const validSlots = ['engineer', 'athlete', 'thinker'];
+    
+    if (!validSlots.includes(slot)) {
+        return res.redirect('/dashboard');
+    }
+    res.render('goals/new', { slot });
 });
 
-// POST NEW GOAL
+/**
+ * 2. POST NEW GOAL
+ */
 router.post('/', async (req, res) => {
     try {
-        // We pull from req.body.goal because the form names are goal[title], goal[slot], etc.
-        const { title, slot, targetMinutes } = req.body.goal; 
-        
-if (!slot) {
-            console.error("GOAL_SAVE_ERROR: No slot provided.");
-            return res.redirect('/goals/new');
+        const { title, slot, targetMinutes, description } = req.body.goal; 
+        const validSlots = ['engineer', 'athlete', 'thinker'];
+
+        // 1. Rigorous Validation
+        if (!validSlots.includes(slot)) {
+            req.flash('error', 'Invalid parameter slot.');
+            return res.redirect('/dashboard');
         }
 
         const now = new Date();
         const currentMonth = now.getMonth();
         const currentYear = now.getFullYear();
 
-        // 1-2 System: Prevent duplicates for the same slot in the same month
-        const existingGoal = await Goal.findOne({ slot, month: currentMonth, year: currentYear });
+        // 2. Prevent Duplicate Objectives (The "One Slot per Month" Rule)
+        const existingGoal = await Goal.findOne({ 
+            user: req.user._id, 
+            slot, 
+            month: currentMonth, 
+            year: currentYear 
+        });
 
         if (existingGoal) {
+            req.flash('info', `Objective for [${slot.toUpperCase()}] already initialized for this cycle.`);
             return res.redirect('/dashboard'); 
         }
 
+        // 3. Construct the Manifest
         const goal = new Goal({
-            title,
+            user: req.user._id,
+            title: title.toUpperCase(), // Keeping the Industrial aesthetic
+            description,
             slot,
             targetMinutes: parseInt(targetMinutes),
+            currentMinutes: 0, // Ensure starting at zero
             month: currentMonth,
             year: currentYear
         });
 
         await goal.save();
+        req.flash('success', `Objective [${slot.toUpperCase()}] initialized.`);
         res.redirect('/dashboard');
+        
     } catch (e) {
-        console.error("GOAL SAVE ERROR:", e.message);
+        console.error("GOAL_SAVE_ERROR:", e.message);
+        req.flash('error', 'Failed to initialize objective.');
         res.redirect('/goals/new');
     }
 });

@@ -1,70 +1,74 @@
 <%- layout('layouts/boilerplate') %>
 
-<div class="row justify-content-center mt-5 pt-lg-5">
-  <div class="col-md-5 col-lg-4">
-    <div class="card ren-hud-border bg-black text-white p-4 shadow-lg">
+<div class="container py-5">
+  <div class="row justify-content-center mt-lg-5">
+    <div class="col-md-6 col-lg-4">
       
-      <div class="mb-4 border-bottom border-secondary pb-2">
-        <h4 class="ren-mono ren-glow-text fw-800 mb-1" style="font-size: 1.1rem;">
-          SYSTEM.AUTH_LOGIN
-        </h4>
-        <p class="ren-meta opacity-50 mb-0">STATUS: IDENTITY_VERIFICATION_REQUIRED</p>
-      </div>
+      <header class="text-center mb-4 ren-mono">
+          <small class="opacity-40 text-uppercase" style="letter-spacing: 2px;">> SECURE_PORTAL</small>
+          <h2 class="fw-800 text-uppercase mt-2">USER_LOGIN</h2>
+      </header>
 
-      <% if (error && error.length > 0) { %>
-        <div class="ren-terminal-alert">[ERR]: <%= error %></div>
-      <% } %>
-      <% if (error_msg && error_msg.length > 0) { %>
-        <div class="ren-terminal-alert">[ERR]: <%= error_msg %></div>
-      <% } %>
-      <% if (success_msg && success_msg.length > 0) { %>
-        <div class="alert alert-dark border-info text-info small py-2 rounded-0 ren-mono" style="font-size: 0.7rem;">
-          [SUCCESS]: <%= success_msg %>
-        </div>
-      <% } %>
-
-      <form action="/auth/login" method="POST">
-        <div class="mb-3">
-          <label class="ren-label">Operator_ID (Email)</label>
-          <input type="email" name="username"
-            class="form-control ren-input"
-            placeholder="NAME@DOMAIN.COM" required />
-        </div>
+      <div class="card border border-dark border-opacity-10 rounded-0 shadow-sm p-4 p-md-5 bg-white">
         
-        <div class="mb-4">
-          <label class="ren-label">Access_Key</label>
-          <input type="password" name="password"
-            class="form-control ren-input"
-            placeholder="••••••••" required />
+        <% if (error && error.length > 0) { %>
+          <div class="border-start border-danger border-4 bg-light p-2 mb-4 ren-mono small text-danger">
+            [ERR]: <%= error %>
+          </div>
+        <% } %>
+        <% if (success_msg && success_msg.length > 0) { %>
+          <div class="border-start border-success border-4 bg-light p-2 mb-4 ren-mono small text-success">
+            [INFO]: <%= success_msg %>
+          </div>
+        <% } %>
+
+        <form action="/auth/login" method="POST">
+          <div class="mb-3">
+            <label class="ren-mono small opacity-50 text-uppercase mb-2 d-block">User_Email</label>
+            <input type="email" name="username"
+              class="form-control bg-light border-0 rounded-0 p-3 ren-mono fw-bold shadow-none"
+              placeholder="operator@domain.com" required />
+          </div>
+          
+          <div class="mb-4">
+            <label class="ren-mono small opacity-50 text-uppercase mb-2 d-block">Access_Key</label>
+            <input type="password" name="password"
+              class="form-control bg-light border-0 rounded-0 p-3 ren-mono fw-bold shadow-none"
+              placeholder="••••••••" required />
+          </div>
+
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-dark py-3 ren-mono fw-bold text-uppercase rounded-0">
+              AUTHENTICATE_IDENTITY
+            </button>
+          </div>
+        </form>
+
+        <div class="position-relative my-4">
+          <hr class="border-dark opacity-10">
+          <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 ren-mono small opacity-30">
+            EXTERNAL_PROVIDER
+          </span>
         </div>
 
-        <div class="d-grid mb-3">
-          <button type="submit" class="btn ren-btn-execute">
-            Execute_Auth.exe
-          </button>
+        <div class="d-grid">
+          <a href="/auth/google" class="btn btn-outline-dark rounded-0 ren-mono small py-3 d-flex align-items-center justify-content-center border-opacity-25" style="font-size: 0.75rem;">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="16" class="me-2" />
+            SIGN_IN_WITH_GOOGLE
+          </a>
         </div>
-      </form>
 
-      <div class="position-relative my-4">
-        <hr class="border-secondary opacity-25">
-        <span class="position-absolute top-50 start-50 translate-middle bg-black px-3 ren-meta opacity-50">
-          OR_OAUTH
-        </span>
+        <div class="text-center mt-5 pt-3 border-top border-dark border-opacity-10">
+          <p class="ren-mono small mb-0 opacity-50">
+            NO_ACCOUNT? <a href="/auth/register" class="text-dark text-decoration-none fw-bold border-bottom border-dark border-2">REGISTER_NEW_USER</a>
+          </p>
+        </div>
+
       </div>
-
-      <div class="d-grid">
-        <a href="/auth/google" class="btn btn-outline-secondary rounded-0 ren-mono small py-2 d-flex align-items-center justify-content-center" style="font-size: 0.75rem; letter-spacing: 1px;">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="16" class="me-2 opacity-75" />
-          LINK_GOOGLE_ACCOUNT
-        </a>
+      
+      <div class="text-center mt-4">
+          <p class="ren-mono small opacity-20">> AWAITING_CREDENTIAL_VERIFICATION</p>
       </div>
-
-      <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
-        <p class="ren-meta mb-0">
-          NO_IDENTITY? <a href="/auth/register" class="text-info text-decoration-none fw-bold">CREATE_NEW_OPERATOR</a>
-        </p>
-      </div>
-
     </div>
   </div>
 </div>

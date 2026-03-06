@@ -1,46 +1,63 @@
 <% layout('layouts/boilerplate') %>
 <script>document.body.classList.add('home-page');</script>
 
-<section class="hero-container" 
-         style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('<%= bgImage %>');">
+<section class="hero-container"
+    style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('<%= bgImage %>');">
 
     <div style="height: 100px;" class="flex-shrink-0"></div>
 
     <div class="container d-flex flex-column justify-content-center flex-grow-1" style="z-index: 5;">
         <div class="row">
             <div class="col-12 col-lg-10 text-white">
+                
                 <h1 class="display-1 fw-500 mb-4 ren-mono" style="line-height: 1.1; letter-spacing: -3px;">
-                    WELCOME_BACK, <br> 
-                    <span style="opacity: 0.5;">IDENT_USER_01.</span>
+                    <% if (currentUser) { %>
+                        <span class="opacity-50 fs-2 d-block mb-2 text-uppercase" style="letter-spacing: 2px;">
+                            IDENT_<%= currentUser.username %>
+                        </span>
+                        HELLO, <span class="text-uppercase text-white"><%= currentUser.name.split(' ')[0] %></span>.
+                    <% } else { %>
+                        BUILD_THE <br>
+                        <span style="opacity: 0.5;">BEST_VERSION.</span>
+                    <% } %>
                 </h1>
 
                 <div class="d-flex flex-column flex-sm-row gap-3">
-                    <a href="/dashboard" class="btn btn-solid px-5 py-3">INITIALIZE_DASHBOARD</a>
-                    <a href="/sessions/new/select" class="btn btn-solid-dark px-5 py-3">LOG_ACTIVE_SESSION</a>
+                    <% if (currentUser) { %>
+                        <a href="/dashboard" class="btn btn-solid px-5 py-3 rounded-0 fw-bold">OPEN_DASHBOARD</a>
+                        <a href="/sessions/new/select" class="btn btn-solid-dark px-5 py-3 rounded-0 fw-bold">LOG_ACTIVITY</a>
+                    <% } else { %>
+                        <button class="btn btn-solid px-5 py-3 rounded-0 fw-bold" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            GET_STARTED
+                        </button>
+                        <button class="btn btn-solid-dark px-5 py-3 rounded-0 fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            LOG_ACTIVITY
+                        </button>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="w-100 p-4 p-md-5" style="z-index: 5;">
-        <div class="container border-top border-white border-opacity-10 pt-4 p-0">
+        <div class="container border-top border-white border-opacity-10 pt-4 px-0">
             <div class="row align-items-end">
                 <div class="col-12 col-md-6 d-flex gap-5 mb-4 mb-md-0">
                     <div>
-                        <small class="ren-label opacity-40">> FOCUS_TYPE</small>
+                        <small class="ren-label opacity-40 d-block mb-1">> SYSTEM_ARCH</small>
                         <span class="text-white opacity-80 ren-mono d-block">THE_TRIPTYCH</span>
                     </div>
                     <div>
-                        <small class="ren-label opacity-40">> SESSION_LOAD</small>
+                        <small class="ren-label opacity-40 d-block mb-1">> METHODOLOGY</small>
                         <span class="text-white opacity-80 ren-mono d-block">1_ROCK // 2_HABITS</span>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-6 text-md-end">
                     <div class="ms-md-auto" style="max-width: 400px;">
-                        <small class="ren-label opacity-40">> DAILY_DIRECTIVE</small>
-                        <p class="text-white opacity-60 italic mb-0" style="font-size: 0.85rem;">
-                          "It gets easier. Every day, it gets a little easier. But you gotta do it every day."
+                        <small class="ren-label opacity-40 d-block mb-1">> DAILY_DIRECTIVE</small>
+                        <p class="text-white opacity-60 italic mb-0 ren-mono" style="font-size: 0.85rem;">
+                            "It gets easier. Every day, it gets a little easier. But you gotta do it every day."
                         </p>
                     </div>
                 </div>

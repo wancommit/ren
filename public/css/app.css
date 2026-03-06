@@ -82,6 +82,8 @@ body:not(.home-page) main {
 
 .hero-container {
     min-height: 100vh;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -91,7 +93,7 @@ body:not(.home-page) main {
     background-attachment: fixed !important;
     position: relative;
     z-index: 1;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Keep hero content above CRT overlays */

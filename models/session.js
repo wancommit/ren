@@ -2,13 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const SessionSchema = new Schema({
+    // THE OWNER: Essential for multi-user security
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Session must belong to a user']
+    },
     // THE LINK: Connects to the Monthly Big Rock
     goal: {
         type: Schema.Types.ObjectId,
         ref: 'Goal',
         required: [true, 'Session must be linked to an active Goal']
     },
-    // THE SLOT: Redundant but critical for high-speed filtering in History
+    // THE SLOT: For high-speed filtering
     slot: {
         type: String,
         required: true,
@@ -31,7 +37,6 @@ const SessionSchema = new Schema({
     date: {
         type: Date,
         default: Date.now,
-        // Ensures you can't log sessions in the future
         max: [Date.now, 'Cannot log work for the future']
     }
 }, { 

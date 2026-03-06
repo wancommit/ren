@@ -161,8 +161,8 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
 
 
 // EXTERNAL ROUTES
-app.use('/sessions', sessionRoutes);
-app.use('/goals', goalRoutes);
+app.use('/sessions',ensureAuth, sessionRoutes);
+app.use('/goals', ensureAuth, goalRoutes);
 app.use('/auth', authRoutes);
 
 

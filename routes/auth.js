@@ -27,10 +27,11 @@ router.post('/register', async (req, res, next) => {
 // 2. LOGIN LOGIC
 router.post('/login', passport.authenticate('local', {
     failureFlash: true,
-    failureRedirect: 'back' // Stays on the home page so the user can try the modal again
+    failureRedirect: '/'
 }), (req, res) => {
-    req.flash('success', 'Identity Verified. Access Granted.');
-    res.redirect('/dashboard');
+    const redirectUrl = req.session.returnTo || '/dashboard';
+    delete req.session.returnTo; // Clean up the session
+    res.redirect(redirectUrl);
 });
 
 // 3. GOOGLE OAUTH
