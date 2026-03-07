@@ -3,15 +3,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express');
 const engine = require('ejs-mate');
-const catchAsync = require ('./utils/catchAsync');
-const ExpressError = require ('./utils/ExpressError');
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const ensureAuth = require('./utils/ensureAuth');
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const session = require('express-session');       
-const passport = require('passport');             
-const flash = require('connect-flash');       
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
 const { MongoStore } = require('connect-mongo');
 
 // 1. MODELS & ROUTES
@@ -19,7 +19,7 @@ const Session = require('./models/session');
 const Goal = require('./models/goal');
 const sessionRoutes = require('./routes/sessions');
 const goalRoutes = require('./routes/goals');
-const authRoutes = require('./routes/auth'); 
+const authRoutes = require('./routes/auth');
 // const ExpressError = require('./utils/ExpressError');
 
 const app = express();
@@ -36,8 +36,8 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.urlencoded({ extended: true })); 
-app.use(methodOverride('_method')); 
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //  Session config 
@@ -69,8 +69,8 @@ app.use((req, res, next) => {
 app.get('/', catchAsync(async (req, res) => {
     // 1. Dynamic Background Logic
     // This picks an image (1.jpg through 31.jpg) from your local folder
-    const dayOfMonth = new Date().getDate(); 
-    const bgImage = `/images/daily/${dayOfMonth}.jpg`; 
+    const dayOfMonth = new Date().getDate();
+    const bgImage = `/images/daily/${dayOfMonth}.jpg`;
 
     // 2. Daily Progress Logic
     const today = new Date();
@@ -90,7 +90,7 @@ app.get('/', catchAsync(async (req, res) => {
 }));
 
 // Dashboard: The Command Center (The Triptych Logic)
-app.get('/dashboard',ensureAuth, async (req, res) => {
+app.get('/dashboard', ensureAuth, async (req, res) => {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
@@ -99,9 +99,9 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
     const [goals, sessions] = await Promise.all([
         Goal.find({ month: currentMonth, year: currentYear }),
         Session.find({
-            date: { 
+            date: {
                 $gte: new Date(currentYear, currentMonth, 1),
-                $lt: new Date(currentYear, currentMonth + 1, 1) 
+                $lt: new Date(currentYear, currentMonth + 1, 1)
             }
         }).sort({ date: -1 })
     ]);
@@ -110,7 +110,7 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
     const loggedDays = new Set(sessions.map(s => s.date.toDateString()));
     let streak = 0;
     let d = new Date();
-    d.setHours(0,0,0,0);
+    d.setHours(0, 0, 0, 0);
 
     // Check backwards from today to see how many consecutive days have logs
     while (loggedDays.has(d.toDateString())) {
@@ -121,7 +121,7 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
     if (streak === 0) {
         let yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        yesterday.setHours(0,0,0,0);
+        yesterday.setHours(0, 0, 0, 0);
         while (loggedDays.has(yesterday.toDateString())) {
             streak++;
             yesterday.setDate(yesterday.getDate() - 1);
@@ -132,7 +132,7 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
     const getSlotData = (slotName) => {
         const goal = goals.find(g => g.slot === slotName);
         if (!goal) return null;
-        
+
         const currentMins = sessions
             .filter(s => s.slot === slotName) // Filter by slot directly for safety
             .reduce((acc, s) => acc + s.duration, 0);
@@ -161,24 +161,34 @@ app.get('/dashboard',ensureAuth, async (req, res) => {
 
 
 // EXTERNAL ROUTES
-app.use('/sessions',ensureAuth, sessionRoutes);
+app.use((req, res, next) => {
+    console.log(`[ROUTER_DEBUG] Incoming Request: ${req.method} ${req.url}`);
+    next();
+});
+app.use('/sessions', ensureAuth, sessionRoutes);
 app.use('/goals', ensureAuth, goalRoutes);
 app.use('/auth', authRoutes);
 
 
 
-// 404 Trigger
-app.all(/(.'*')/, (req, res, next) => { 
-    next(new ExpressError('Page Not Found', 404));
+// 404 Catch-All Middleware
+app.use((req, res, next) => {
+    console.log(`[ROUTER_DEBUG] Hit 404 Catch-All for: ${req.url}`);
+    res.status(404).render('404');
 });
 
-// Error Handling
-app.use((err,req,res,next)=>{
-      console.error(err.stack);
-    const {statusCode = 500,message = 'Something went wrong'} = err;
-    res.status(statusCode).send(message)
-   
-})
+// Global Error Handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    const { statusCode = 500, message = 'Something went wrong' } = err;
+
+    // Fallback if standard error triggers a 404
+    if (statusCode === 404) {
+        return res.status(404).render('404');
+    }
+
+    res.status(statusCode).send(message);
+});
 
 
 

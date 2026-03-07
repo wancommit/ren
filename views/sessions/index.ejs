@@ -1,110 +1,151 @@
 <% layout('layouts/boilerplate') %>
-<% if (typeof activeFilter === 'undefined' ) { var activeFilter = null; } %>
+    <% if (typeof activeFilter==='undefined' ) { var activeFilter=null; } %>
 
-<div class="container py-5">
-    <header class="mb-5">
-        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-dark border-opacity-10 pb-4">
-            <div>
-                <small class="ren-mono text-uppercase opacity-50 d-block mb-1" style="letter-spacing: 2px;">
-                    > SYSTEM_ARCHIVE
-                </small>
-                <h1 class="fw-800 mb-0 ren-mono text-uppercase" style="letter-spacing: -1px;">
-                    ENTRY_HISTORY
-                </h1>
-            </div>
-            <a href="/dashboard" class="ren-mono small text-dark text-decoration-none opacity-50 hover-opacity-100">
-                [ RETURN_TO_DASHBOARD ]
-            </a>
-        </div>
+        <div class="container py-5">
+            <header class="mb-5">
+                <div
+                    class="d-flex justify-content-between align-items-end mb-4 border-bottom border-dark border-opacity-10 pb-4">
+                    <div>
+                        <small class="ren-mono text-uppercase opacity-50 d-block mb-1" style="letter-spacing: 2px;">
+                            > SYSTEM_ARCHIVE
+                        </small>
+                        <h1 class="fw-800 mb-0 ren-mono text-uppercase" style="letter-spacing: -1px;">
+                            ENTRY_HISTORY
+                        </h1>
+                    </div>
+                    <a href="/dashboard"
+                        class="ren-mono small text-dark text-decoration-none opacity-50 hover-opacity-100">
+                        [ RETURN_TO_DASHBOARD ]
+                    </a>
+                </div>
 
-        <div class="d-flex gap-2">
-            <a href="/sessions"
-                class="btn btn-sm rounded-0 ren-mono px-3 <%= !activeFilter ? 'btn-dark' : 'btn-outline-dark' %>">ALL</a>
-            <a href="/sessions?slot=engineer"
-                class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'engineer' ? 'btn-dark' : 'btn-outline-dark' %>">ENGINEER</a>
-            <a href="/sessions?slot=athlete"
-                class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'athlete' ? 'btn-dark' : 'btn-outline-dark' %>">ATHLETE</a>
-            <a href="/sessions?slot=thinker"
-                class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'thinker' ? 'btn-dark' : 'btn-outline-dark' %>">THINKER</a>
-        </div>
-    </header>
+                <div class="d-flex gap-2">
+                    <a href="/sessions"
+                        class="btn btn-sm rounded-0 ren-mono px-3 <%= !activeFilter ? 'btn-dark' : 'btn-outline-dark' %>">ALL</a>
+                    <a href="/sessions?slot=engineer"
+                        class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'engineer' ? 'btn-dark' : 'btn-outline-dark' %>">ENGINEER</a>
+                    <a href="/sessions?slot=athlete"
+                        class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'athlete' ? 'btn-dark' : 'btn-outline-dark' %>">ATHLETE</a>
+                    <a href="/sessions?slot=thinker"
+                        class="btn btn-sm rounded-0 ren-mono px-3 <%= activeFilter === 'thinker' ? 'btn-dark' : 'btn-outline-dark' %>">THINKER</a>
+                </div>
+            </header>
 
-    <div class="border border-dark border-opacity-10 bg-white">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
-                    <tr class="ren-mono opacity-50 small">
-                        <th class="ps-4 py-3 border-0">TIMESTAMP</th>
-                        <th class="border-0">CATEGORY</th>
-                        <th class="border-0">ENTRY_TITLE</th>
-                        <th class="border-0 text-center">UNITS</th>
-                        <th class="pe-4 border-0 text-end">MANAGEMENT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for(let session of sessions) { %>
-                        <tr class="border-top border-dark border-opacity-5">
-                            <td class="ps-4 ren-mono small opacity-50">
-                                <%= session.date.toLocaleDateString('en-GB').replace(/\//g, '.') %>
-                            </td>
-                            <td>
-                                <span class="badge rounded-0 border border-dark border-opacity-10 text-dark fw-800 small ren-mono">
-                                    <%= (session.slot || 'N/A').toUpperCase() %>
-                                </span>
-                            </td>
-                            <td>
-                                <div class="fw-600 text-dark">
-                                    <%= session.title %>
-                                </div>
-                                <% if (session.description) { %>
-                                    <div class="small opacity-40 ren-mono mt-1" style="font-size: 0.7rem;">
-                                        // <%= session.description.substring(0, 60) %><%= session.description.length > 60 ? '...' : '' %>
+            <div class="border border-dark border-opacity-10 bg-white">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr class="ren-mono opacity-50 small">
+                                <th class="ps-4 py-3 border-0">TIMESTAMP</th>
+                                <th class="border-0">CATEGORY</th>
+                                <th class="border-0">ENTRY_TITLE</th>
+                                <th class="border-0 text-center">UNITS</th>
+                                <th class="pe-4 border-0 text-end">MANAGEMENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let session of sessions) { %>
+                                <tr class="border-top border-dark border-opacity-5">
+                                    <td class="ps-4 ren-mono small opacity-50">
+                                        <%= session.date.toLocaleDateString('en-GB').replace(/\//g, '.' ) %>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="badge rounded-0 border border-dark border-opacity-10 text-dark fw-800 small ren-mono">
+                                            <%= (session.slot || 'N/A' ).toUpperCase() %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-600 text-dark">
+                                            <%= session.title %>
+                                        </div>
+                                        <% if (session.description) { %>
+                                            <div class="small opacity-40 ren-mono mt-1" style="font-size: 0.7rem;">
+                                                // <%= session.description.substring(0, 60) %>
+                                                    <%= session.description.length> 60 ? '...' : '' %>
+                                            </div>
+                                            <% } %>
+                                    </td>
+                                    <td class="text-center ren-mono fw-800">
+                                        +<%= session.duration * 10 %>
+                                    </td>
+                                    <td class="pe-4 text-end">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <a href="/sessions/<%= session._id %>/edit"
+                                                class="btn btn-sm rounded-0 ren-mono py-1 px-2 border-0 opacity-50 hover-opacity-100"
+                                                style="font-size: 0.65rem;">
+                                                [ EDIT ]
+                                            </a>
+                                            <button type="button"
+                                                class="btn btn-sm rounded-0 ren-mono py-1 px-2 border-0 text-danger opacity-50 hover-opacity-100"
+                                                style="font-size: 0.65rem;" data-bs-toggle="modal"
+                                                data-bs-target="#deleteSessionModal<%= session._id %>">
+                                                [ DELETE ]
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Delete Session Modal -->
+                                <div class="modal fade" id="deleteSessionModal<%= session._id %>" tabindex="-1"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div
+                                            class="modal-content ren-hud-border border-0 rounded-0 shadow-lg bg-black p-4">
+                                            <div class="modal-header border-0 pb-0">
+                                                <div>
+                                                    <p class="ren-label mb-1 text-danger opacity-75">>
+                                                        WARNING_CRITICAL_ACTION</p>
+                                                    <h5 class="modal-title fw-800 text-white">CONFIRM_DELETION</h5>
+                                                </div>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body text-white">
+                                                <p class="ren-mono small opacity-75 mb-4">
+                                                    Are you sure you want to permanently delete the <strong
+                                                        class="text-uppercase">"<%= session.title %>"</strong> record?
+                                                    This action cannot be undone and will affect your overall XP and
+                                                    streaks.
+                                                </p>
+                                                <div class="d-flex gap-2">
+                                                    <button type="button"
+                                                        class="btn btn-outline-secondary rounded-0 py-2 flex-grow-1 ren-mono fw-bold"
+                                                        data-bs-dismiss="modal">CANCEL</button>
+                                                    <form action="/sessions/<%= session._id %>?_method=DELETE"
+                                                        method="POST" class="flex-grow-1 m-0">
+                                                        <button type="submit"
+                                                            class="btn btn-danger w-100 rounded-0 py-2 ren-mono fw-bold">EXECUTE_DROP</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                <% } %>
-                            </td>
-                            <td class="text-center ren-mono fw-800">
-                                +<%= session.duration * 10 %>
-                            </td>
-                            <td class="pe-4 text-end">
-                                <div class="d-flex justify-content-end gap-1">
-                                    <a href="/sessions/<%= session._id %>/edit"
-                                        class="btn btn-sm rounded-0 ren-mono py-1 px-2 border-0 opacity-50 hover-opacity-100"
-                                        style="font-size: 0.65rem;">
-                                        [ EDIT ]
-                                    </a>
-                                    <form action="/sessions/<%= session._id %>?_method=DELETE" method="POST"
-                                        onsubmit="return confirm('PERMANENTLY DELETE THIS RECORD?')">
-                                        <button class="btn btn-sm rounded-0 ren-mono py-1 px-2 border-0 text-danger opacity-50 hover-opacity-100"
-                                            style="font-size: 0.65rem;">
-                                            [ DELETE ]
-                                        </button>
-                                    </form>
                                 </div>
-                            </td>
-                        </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <% if (sessions.length===0) { %>
+                    <div class="p-5 text-center ren-mono opacity-30">
+                        NO_DATA_FOUND_IN_ARCHIVE
+                    </div>
                     <% } %>
-                </tbody>
-            </table>
-        </div>
-        
-        <% if (sessions.length === 0) { %>
-            <div class="p-5 text-center ren-mono opacity-30">
-                NO_DATA_FOUND_IN_ARCHIVE
             </div>
-        <% } %>
-    </div>
 
-    <div class="mt-4 text-end">
-        <small class="ren-mono opacity-25">> END_OF_ARCHIVE_RECORDS</small>
-    </div>
-</div>
+            <div class="mt-4 text-end">
+                <small class="ren-mono opacity-25">> END_OF_ARCHIVE_RECORDS</small>
+            </div>
+        </div>
 
-<style>
-    .hover-opacity-100:hover {
-        opacity: 1 !important;
-        background-color: rgba(0,0,0,0.02);
-    }
-    .table-hover tbody tr:hover {
-        background-color: rgba(0,0,0,0.01);
-    }
-</style>
+        <style>
+            .hover-opacity-100:hover {
+                opacity: 1 !important;
+                background-color: rgba(0, 0, 0, 0.02);
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: rgba(0, 0, 0, 0.01);
+            }
+        </style>

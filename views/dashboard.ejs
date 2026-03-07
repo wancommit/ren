@@ -1,117 +1,143 @@
 <% layout('layouts/boilerplate') %>
 
-<% 
-   let totalPercent = 0;
-   let activeSlots = 0;
-   if (typeof triptych !== 'undefined' && triptych) {
-       for (let key in triptych) {
-           if (triptych[key]) {
-               totalPercent += triptych[key].percent;
-               activeSlots++;
-           }
-       }
-   }
-   const averageProgress = activeSlots > 0 ? (totalPercent / activeSlots) : 0;
-%>
+    <% let totalPercent=0; let activeSlots=0; if (typeof triptych !=='undefined' && triptych) { for (let key in
+        triptych) { if (triptych[key]) { totalPercent +=triptych[key].percent; activeSlots++; } } } const
+        averageProgress=activeSlots> 0 ? (totalPercent / activeSlots) : 0;
+        %>
 
-<div class="container bg-white px-0 shadow-sm mt-4 border-top border-dark border-opacity-10">
+        <div class="container bg-white px-0 shadow-sm mt-4 border-top border-dark border-opacity-10">
 
-    <% if (activeSlots > 0 && averageProgress >= 100) { %>
-        <div class="border-bottom border-success py-3 px-4">
-            <div class="ren-mono small text-success">
-                > ALL OBJECTIVES MET. ENJOY THE MOMENTUM.
-            </div>
-        </div>
-    <% } %>
+            <% if (activeSlots> 0 && averageProgress >= 100) { %>
+                <div class="border-bottom border-success py-3 px-4">
+                    <div class="ren-mono small text-success">
+                        > ALL OBJECTIVES MET. ENJOY THE MOMENTUM.
+                    </div>
+                </div>
+                <% } %>
 
-    <header class="border-bottom border-dark border-opacity-10 py-4 px-4 d-flex justify-content-between align-items-center border-start border-end">
-        <div class="ren-mono">
-            <h2 class="h5 fw-800 mb-0"><%= now.toLocaleString('default', { month: 'long' }).toUpperCase() %> / SUMMARY</h2>
-            <div class="opacity-50 small mt-1">
-                TOTAL: <%= totalXP %> UNITS // 
-                <span class="<%= streak >= 3 ? 'text-danger' : '' %>">STREAK: <%= streak %> DAYS</span>
-            </div>
-        </div>
-        <div class="text-end">
-            <a href="/sessions/new/select" class="btn btn-dark rounded-0 py-2 px-4 small ren-mono text-decoration-none">LOG_ENTRY</a>
-        </div>
-    </header>
-
-    <section class="border-bottom border-dark border-opacity-10 border-start border-end">
-        <div class="row g-0 align-items-stretch">
-            <div class="col-md-2 py-5 d-flex flex-column align-items-center justify-content-center border-end border-dark border-opacity-10">
-               <div class="ren-spirit <%= streak >= 3 ? 'on-fire' : '' %> <%= (activeSlots > 0 && averageProgress >= 100) ? 'vibe-maxed' : '' %>" 
-                    style="--glow-strength: <%= 10 + (averageProgress * 0.4) %>px;">
-               </div>
-               <div class="ren-mono small opacity-30 mt-3" style="font-size: 0.6rem;">CONSISTENCY: <%= Math.round(averageProgress) %>%</div>
-            </div>
-
-            <div class="col-md-10 p-4 d-flex align-items-center">
-                <div class="w-100">
-                    <% if (triptych.engineer) { %>
-                        <div class="d-flex justify-content-between align-items-end">
-                            <div>
-                                <small class="ren-mono opacity-40 d-block mb-1">> PRIMARY_FOCUS [ENGINEER]</small>
-                                <h2 class="display-6 fw-500 mb-0 ren-mono text-uppercase"><%= triptych.engineer.title %></h2>
+                    <header
+                        class="border-bottom border-dark border-opacity-10 py-4 px-4 d-flex justify-content-between align-items-center border-start border-end">
+                        <div class="ren-mono">
+                            <h2 class="h5 fw-800 mb-0">
+                                <%= now.toLocaleString('default', { month: 'long' }).toUpperCase() %> / SUMMARY
+                            </h2>
+                            <div class="opacity-50 small mt-1">
+                                TOTAL: <%= totalXP %> UNITS //
+                                    <span class="<%= streak >= 3 ? 'text-danger' : '' %>">STREAK: <%= streak %>
+                                            DAYS</span>
                             </div>
-                            <div class="text-end ren-mono" style="min-width: 200px;">
-                                <a href="/sessions/new?slot=engineer" class="btn btn-outline-dark btn-sm rounded-0 fw-800 text-uppercase mb-3 px-3 py-2 border-opacity-25">UPDATE_DATA</a>
-                                <div class="h3 mb-0"><%= triptych.engineer.percent %>%</div>
-                                <div class="progress rounded-0 bg-light" style="height: 3px;">
-                                    <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.engineer.percent, 100) %>%"></div>
+                        </div>
+                        <div class="text-end">
+                            <a href="/sessions/new/select"
+                                class="btn btn-dark rounded-0 py-2 px-4 small ren-mono text-decoration-none">LOG_ENTRY</a>
+                        </div>
+                    </header>
+
+                    <section class="border-bottom border-dark border-opacity-10 border-start border-end">
+                        <div class="row g-0 align-items-stretch">
+                            <div
+                                class="col-md-2 py-5 d-flex flex-column align-items-center justify-content-center border-end border-dark border-opacity-10">
+                                <div class="ren-spirit <%= streak >= 3 ? 'on-fire' : '' %> <%= (activeSlots > 0 && averageProgress >= 100) ? 'vibe-maxed' : '' %>"
+                                    style="--glow-strength: <%= 10 + (averageProgress * 0.4) %>px;">
+                                </div>
+                                <div class="ren-mono small opacity-30 mt-3" style="font-size: 0.6rem;">CONSISTENCY: <%=
+                                        Math.round(averageProgress) %>%</div>
+                            </div>
+
+                            <div class="col-md-10 p-4 d-flex align-items-center">
+                                <div class="w-100">
+                                    <% if (triptych.engineer) { %>
+                                        <div
+                                            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end gap-3 gap-md-0">
+                                            <div>
+                                                <small class="ren-mono opacity-40 d-block mb-1">> PRIMARY_FOCUS
+                                                    [ENGINEER]</small>
+                                                <h2 class="display-6 fw-500 mb-0 ren-mono text-uppercase">
+                                                    <%= triptych.engineer.title %>
+                                                </h2>
+                                            </div>
+                                            <div class="text-start text-md-end ren-mono w-100"
+                                                style="max-width: 300px;">
+                                                <a href="/sessions/new?slot=engineer"
+                                                    class="btn btn-outline-dark btn-sm rounded-0 fw-800 text-uppercase mb-3 px-3 py-2 border-opacity-25 w-100 w-md-auto">UPDATE_DATA</a>
+                                                <div class="h3 mb-0">
+                                                    <%= triptych.engineer.percent %>%
+                                                </div>
+                                                <div class="progress rounded-0 bg-light" style="height: 3px;">
+                                                    <div class="progress-bar bg-dark"
+                                                        style="width: <%= Math.min(triptych.engineer.percent, 100) %>%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } else { %>
+                                            <a href="/goals/new?slot=engineer"
+                                                class="d-block py-4 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed mx-2">+
+                                                SET PRIMARY OBJECTIVE</a>
+                                            <% } %>
                                 </div>
                             </div>
                         </div>
-                    <% } else { %>
-                        <a href="/goals/new?slot=engineer" class="d-block py-4 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed mx-2">+ SET PRIMARY OBJECTIVE</a>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-    </section>
+                    </section>
 
-    <div class="border-bottom border-dark border-opacity-10 border-start border-end">
-        <div class="row g-0">
-            <div class="col-md-6 border-end border-dark border-opacity-10 p-4">
-                <h5 class="ren-mono small opacity-50 mb-4">> SECONDARY [ATHLETE]</h5>
-                <% if (triptych.athlete) { %>
-                    <h4 class="fw-500 mb-2 ren-mono"><%= triptych.athlete.title %></h4>
-                    <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.athlete.percent, 100) %>%"></div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="ren-mono small opacity-50">PROGRESS: <%= triptych.athlete.percent %>%</span>
-                        <a href="/sessions/new?slot=athlete" class="ren-mono small text-dark fw-bold text-decoration-none border-bottom border-dark border-2 pb-1">LOG_SESSION</a>
-                    </div>
-                <% } else { %>
-                    <a href="/goals/new?slot=athlete" class="d-block py-3 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed">+ CONFIGURE ATHLETE STATS</a>
-                <% } %>
-            </div>
-            
-            <div class="col-md-6 p-4">
-                <h5 class="ren-mono small opacity-50 mb-4">> SECONDARY [THINKER]</h5>
-                <% if (triptych.thinker) { %>
-                    <h4 class="fw-500 mb-2 ren-mono"><%= triptych.thinker.title %></h4>
-                    <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
-                        <div class="progress-bar bg-dark" style="width: <%= Math.min(triptych.thinker.percent, 100) %>%"></div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="ren-mono small opacity-50">PROGRESS: <%= triptych.thinker.percent %>%</span>
-                        <a href="/sessions/new?slot=thinker" class="ren-mono small text-dark fw-bold text-decoration-none border-bottom border-dark border-2 pb-1">LOG_SESSION</a>
-                    </div>
-                <% } else { %>
-                    <a href="/goals/new?slot=thinker" class="d-block py-3 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed">+ CONFIGURE THINKER STATS</a>
-                <% } %>
-            </div>
-        </div>
-    </div>
+                    <div class="border-bottom border-dark border-opacity-10 border-start border-end">
+                        <div class="row g-0">
+                            <div class="col-md-6 border-end border-dark border-opacity-10 p-4">
+                                <h5 class="ren-mono small opacity-50 mb-4">> SECONDARY [ATHLETE]</h5>
+                                <% if (triptych.athlete) { %>
+                                    <h4 class="fw-500 mb-2 ren-mono">
+                                        <%= triptych.athlete.title %>
+                                    </h4>
+                                    <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
+                                        <div class="progress-bar bg-dark"
+                                            style="width: <%= Math.min(triptych.athlete.percent, 100) %>%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="ren-mono small opacity-50">PROGRESS: <%= triptych.athlete.percent
+                                                %>%</span>
+                                        <a href="/sessions/new?slot=athlete"
+                                            class="ren-mono small text-dark fw-bold text-decoration-none border-bottom border-dark border-2 pb-1">LOG_SESSION</a>
+                                    </div>
+                                    <% } else { %>
+                                        <a href="/goals/new?slot=athlete"
+                                            class="d-block py-3 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed">+
+                                            CONFIGURE ATHLETE STATS</a>
+                                        <% } %>
+                            </div>
 
-    <% if (activeSlots === 0) { %>
-        <div class="p-5 text-center bg-light bg-opacity-50 border-start border-end border-bottom">
-            <h3 class="ren-mono fw-800 mb-3 text-uppercase">INDEX_EMPTY</h3>
-            <p class="opacity-50 small ren-mono mb-4">You haven't defined any objectives yet.</p>
-            <a href="/goals/new" class="btn btn-dark rounded-0 px-5 py-3 ren-mono fw-bold text-decoration-none">[ INITIALIZE PARAMETERS ]</a>
-        </div>
-    <% } %>
+                            <div class="col-md-6 p-4">
+                                <h5 class="ren-mono small opacity-50 mb-4">> SECONDARY [THINKER]</h5>
+                                <% if (triptych.thinker) { %>
+                                    <h4 class="fw-500 mb-2 ren-mono">
+                                        <%= triptych.thinker.title %>
+                                    </h4>
+                                    <div class="progress rounded-0 bg-light mb-3" style="height: 2px;">
+                                        <div class="progress-bar bg-dark"
+                                            style="width: <%= Math.min(triptych.thinker.percent, 100) %>%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="ren-mono small opacity-50">PROGRESS: <%= triptych.thinker.percent
+                                                %>%</span>
+                                        <a href="/sessions/new?slot=thinker"
+                                            class="ren-mono small text-dark fw-bold text-decoration-none border-bottom border-dark border-2 pb-1">LOG_SESSION</a>
+                                    </div>
+                                    <% } else { %>
+                                        <a href="/goals/new?slot=thinker"
+                                            class="d-block py-3 text-center text-decoration-none text-muted opacity-50 ren-mono small border border-dashed">+
+                                            CONFIGURE THINKER STATS</a>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
 
-</div>
+                    <% if (activeSlots===0) { %>
+                        <div class="p-5 text-center bg-light bg-opacity-50 border-start border-end border-bottom">
+                            <h3 class="ren-mono fw-800 mb-3 text-uppercase">INDEX_EMPTY</h3>
+                            <p class="opacity-50 small ren-mono mb-4">You haven't defined any objectives yet.</p>
+                            <a href="/goals/new"
+                                class="btn btn-dark rounded-0 px-5 py-3 ren-mono fw-bold text-decoration-none">[
+                                INITIALIZE PARAMETERS ]</a>
+                        </div>
+                        <% } %>
+
+        </div>

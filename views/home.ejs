@@ -1,21 +1,24 @@
 <% layout('layouts/boilerplate') %>
-<script>document.body.classList.add('home-page');</script>
+    <script>document.body.classList.add('home-page');</script>
 
-<section class="hero-container"
-    style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('<%= bgImage %>');">
+    <section class="hero-container"
+        style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('<%= bgImage %>');">
 
-    <div style="height: 100px;" class="flex-shrink-0"></div>
+        <div style="height: 100px;" class="flex-shrink-0"></div>
 
-    <div class="container d-flex flex-column justify-content-center flex-grow-1" style="z-index: 5;">
-        <div class="row">
-            <div class="col-12 col-lg-10 text-white">
-                
-                <h1 class="display-1 fw-500 mb-4 ren-mono" style="line-height: 1.1; letter-spacing: -3px;">
-                    <% if (currentUser) { %>
-                        <span class="opacity-50 fs-2 d-block mb-2 text-uppercase" style="letter-spacing: 2px;">
-                            IDENT_<%= currentUser.username %>
-                        </span>
-                        HELLO, <span class="text-uppercase text-white"><%= currentUser.name.split(' ')[0] %></span>.
+        <div class="container d-flex flex-column justify-content-center flex-grow-1" style="z-index: 5;">
+            <div class="row">
+                <div class="col-12 col-lg-10 text-white">
+
+                    <h1 class="display-3 display-md-1 fw-500 mb-4 ren-mono"
+                        style="line-height: 1.1; letter-spacing: -3px;">
+                        <% if (currentUser) { %>
+                            <span class="opacity-50 fs-4 fs-md-2 d-block mb-2 text-uppercase"
+                                style="letter-spacing: 2px;">
+                                IDENT_<%= currentUser.username %>
+                            </span>
+                            HELLO, <span class="text-uppercase text-white">
+                                <%= currentUser.name.split(' ')[0] %></span>.
                     <% } else { %>
                         BUILD_THE <br>
                         <span style="opacity: 0.5;">BEST_VERSION.</span>
@@ -41,8 +44,8 @@
 
     <div class="w-100 p-4 p-md-5" style="z-index: 5;">
         <div class="container border-top border-white border-opacity-10 pt-4 px-0">
-            <div class="row align-items-end">
-                <div class="col-12 col-md-6 d-flex gap-5 mb-4 mb-md-0">
+            <div class="row align-items-end flex-column flex-md-row">
+                <div class="col-12 col-md-6 d-flex flex-column flex-sm-row gap-3 gap-md-5 mb-4 mb-md-0">
                     <div>
                         <small class="ren-label opacity-40 d-block mb-1">> SYSTEM_ARCH</small>
                         <span class="text-white opacity-80 ren-mono d-block">THE_TRIPTYCH</span>
@@ -53,7 +56,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 text-md-end">
+                <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
                     <div class="ms-md-auto" style="max-width: 400px;">
                         <small class="ren-label opacity-40 d-block mb-1">> DAILY_DIRECTIVE</small>
                         <p class="text-white opacity-60 italic mb-0 ren-mono" style="font-size: 0.85rem;">

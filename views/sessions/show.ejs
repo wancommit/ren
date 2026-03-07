@@ -1,114 +1,125 @@
 <% layout('layouts/boilerplate') %>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-7">
-            
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb ren-mono small text-uppercase">
-                    <li class="breadcrumb-item"><a href="/sessions" class="text-muted text-decoration-none">HISTORY</a></li>
-                    <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">ENTRY_DETAILS</li>
-                </ol>
-            </nav>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
 
-            <div class="card border border-dark border-opacity-10 rounded-0 shadow-sm p-4 p-md-5 bg-white">
-                
-                <div class="mb-4 pb-4 border-bottom border-dark border-opacity-10">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <span class="badge rounded-0 bg-dark text-white px-3 py-2 ren-mono small text-uppercase">
-                            <%= session.category %>
-                        </span>
-                        <small class="ren-mono opacity-30 mt-1" style="font-size: 0.6rem;">ENTRY_ID: <%= session._id.toString().slice(-6).toUpperCase() %></small>
-                    </div>
-                    
-                    <h1 class="display-6 fw-800 ren-mono text-uppercase mb-2">
-                        <%= session.title %>
-                    </h1>
-                    <p class="text-muted ren-mono small mb-0">
-                        DATE_STAMP: <%= new Date(session.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase() %>
-                    </p>
-                </div>
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb ren-mono small text-uppercase">
+                        <li class="breadcrumb-item"><a href="/sessions"
+                                class="text-muted text-decoration-none">HISTORY</a></li>
+                        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">ENTRY_DETAILS</li>
+                    </ol>
+                </nav>
 
-                <div class="mb-5">
-                    <h6 class="ren-mono small opacity-40 text-uppercase mb-3" style="letter-spacing: 1px;">Session_Notes</h6>
-                    <p class="text-dark lead" style="font-family: inherit;">
-                        <%= session.description || "No specific data recorded for this entry." %>
-                    </p>
-                </div>
+                <div class="card border border-dark border-opacity-10 rounded-0 shadow-sm p-4 p-md-5 bg-white">
 
-                <div class="row g-0 border border-dark border-opacity-10 bg-light bg-opacity-50">
-                    <div class="col-6 p-4 border-end border-dark border-opacity-10">
-                        <h6 class="ren-mono small opacity-40 text-uppercase mb-1">Time_Invested</h6>
-                        <p class="h2 fw-800 ren-mono mb-0">
-                            <%= session.duration %><span class="h4 opacity-30 ms-1">M</span>
+                    <div class="mb-4 pb-4 border-bottom border-dark border-opacity-10">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge rounded-0 bg-dark text-white px-3 py-2 ren-mono small text-uppercase">
+                                <%= session.category %>
+                            </span>
+                            <small class="ren-mono opacity-30 mt-1" style="font-size: 0.6rem;">ENTRY_ID: <%=
+                                    session._id.toString().slice(-6).toUpperCase() %></small>
+                        </div>
+
+                        <h1 class="display-6 fw-800 ren-mono text-uppercase mb-2">
+                            <%= session.title %>
+                        </h1>
+                        <p class="text-muted ren-mono small mb-0">
+                            DATE_STAMP: <%= new Date(session.date).toLocaleDateString('en-US', { weekday: 'long' ,
+                                year: 'numeric' , month: 'long' , day: 'numeric' }).toUpperCase() %>
                         </p>
                     </div>
-                    <div class="col-6 p-4">
-                        <h6 class="ren-mono small opacity-40 text-uppercase mb-1">Unit_Yield</h6>
-                        <p class="h2 fw-800 ren-mono mb-0 text-dark">
-                            +<%= session.duration * 10 %>
+
+                    <div class="mb-5">
+                        <h6 class="ren-mono small opacity-40 text-uppercase mb-3" style="letter-spacing: 1px;">
+                            Session_Notes</h6>
+                        <p class="text-dark lead" style="font-family: inherit;">
+                            <%= session.description || "No specific data recorded for this entry." %>
                         </p>
                     </div>
-                </div>
 
-                <div class="mt-5 pt-4 d-flex justify-content-between align-items-center">
-                    <div class="d-flex gap-2">
-                        <a href="/sessions/<%= session._id %>/edit"
-                            class="btn btn-dark rounded-0 px-4 ren-mono small fw-bold text-uppercase">REVISE_ENTRY</a>
-                        <a href="/sessions" class="btn btn-outline-secondary rounded-0 px-4 ren-mono small text-uppercase">BACK</a>
+                    <div class="row g-0 border border-dark border-opacity-10 bg-light bg-opacity-50">
+                        <div class="col-6 p-4 border-end border-dark border-opacity-10">
+                            <h6 class="ren-mono small opacity-40 text-uppercase mb-1">Time_Invested</h6>
+                            <p class="h2 fw-800 ren-mono mb-0">
+                                <%= session.duration %><span class="h4 opacity-30 ms-1">M</span>
+                            </p>
+                        </div>
+                        <div class="col-6 p-4">
+                            <h6 class="ren-mono small opacity-40 text-uppercase mb-1">Unit_Yield</h6>
+                            <p class="h2 fw-800 ren-mono mb-0 text-dark">
+                                +<%= session.duration * 10 %>
+                            </p>
+                        </div>
                     </div>
 
-                    <form id="deleteForm" action="/sessions/<%= session._id %>?_method=DELETE" method="POST"
-                        class="d-inline">
-                        <button type="button" onclick="confirmDelete()"
-                            class="btn btn-link btn-sm text-danger ren-mono text-decoration-none opacity-50 hover-opacity-100 text-uppercase p-0">
+                    <div class="mt-5 pt-4 d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
+                            <a href="/sessions/<%= session._id %>/edit"
+                                class="btn btn-dark rounded-0 px-4 ren-mono small fw-bold text-uppercase">REVISE_ENTRY</a>
+                            <a href="/sessions"
+                                class="btn btn-outline-secondary rounded-0 px-4 ren-mono small text-uppercase">BACK</a>
+                        </div>
+
+                        <button type="button"
+                            class="btn btn-link btn-sm text-danger ren-mono text-decoration-none opacity-50 hover-opacity-100 text-uppercase p-0"
+                            data-bs-toggle="modal" data-bs-target="#deleteSessionModal">
                             [ Delete_Permanent ]
                         </button>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="mt-4 text-center">
-                <p class="ren-mono small opacity-20">> END_OF_DATA_STRING</p>
-            </div>
 
+                <div class="mt-4 text-center">
+                    <p class="ren-mono small opacity-20">> END_OF_DATA_STRING</p>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 
-<style>
-    .hover-opacity-100:hover {
-        opacity: 1 !important;
-    }
-    /* Custom separator for industrial breadcrumbs */
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: "//";
-        color: rgba(0,0,0,0.2);
-    }
-</style>
+    <!-- Delete Session Modal -->
+    <div class="modal fade" id="deleteSessionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ren-hud-border border-0 rounded-0 shadow-lg bg-black p-4">
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <p class="ren-label mb-1 text-danger opacity-75">> WARNING_CRITICAL_ACTION</p>
+                        <h5 class="modal-title fw-800 text-white">CONFIRM_DELETION</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-white">
+                    <p class="ren-mono small opacity-75 mb-4">
+                        Are you sure you want to permanently delete the <strong class="text-uppercase">"<%=
+                                session.title %>"</strong> record? This will remove <%= session.duration * 10 %> units
+                            from your manifest history.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <button type="button"
+                            class="btn btn-outline-secondary rounded-0 py-2 flex-grow-1 ren-mono fw-bold"
+                            data-bs-dismiss="modal">CANCEL</button>
+                        <form action="/sessions/<%= session._id %>?_method=DELETE" method="POST"
+                            class="flex-grow-1 m-0">
+                            <button type="submit"
+                                class="btn btn-danger w-100 rounded-0 py-2 ren-mono fw-bold">EXECUTE_DROP</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-    function confirmDelete() {
-        Swal.fire({
-            title: 'PURGE DATA?',
-            text: "This will remove <%= session.duration * 10 %> units from your manifest history.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#000',
-            cancelButtonColor: '#ff4d4d',
-            confirmButtonText: 'CONFIRM_PURGE',
-            cancelButtonText: 'CANCEL',
-            reverseButtons: true,
-            customClass: {
-                popup: 'rounded-0 ren-mono',
-                confirmButton: 'rounded-0',
-                cancelButton: 'rounded-0'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('deleteForm').submit();
-            }
-        })
-    }
-</script>
+    <style>
+        .hover-opacity-100:hover {
+            opacity: 1 !important;
+        }
+
+        /* Custom separator for industrial breadcrumbs */
+        .breadcrumb-item+.breadcrumb-item::before {
+            content: "//";
+            color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
