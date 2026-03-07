@@ -54,13 +54,14 @@ module.exports = (passport) => {
                     return done(null, user);
                 }
 
-                // 3. New Operator Initialization
                 // Ensure 'username' matches your schema requirements
                 const generatedUsername = profile.displayName.replace(/\s+/g, '_').toLowerCase() + Math.floor(1000 + Math.random() * 9000);
+                const generatedName = profile.name && profile.name.givenName ? profile.name.givenName : profile.displayName;
                 
                 user = await User.create({
                     username: generatedUsername, 
                     email: userEmail,
+                    name: generatedName,
                     googleId: profile.id
                     // Note: No password field created for Google users
                 });
