@@ -56,14 +56,14 @@ router.post('/login', passport.authenticate('local', {
 });
 
 // 3. GOOGLE OAUTH
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback',
-    passport.authenticate('google', { failureFlash: true, failureRedirect: '/' }),
-    (req, res) => {
-        res.redirect('/dashboard');
-    }
-);
+// router.get('/google/callback',
+//     passport.authenticate('google', { failureFlash: true, failureRedirect: '/' }),
+//     (req, res) => {
+//         res.redirect('/dashboard');
+//     }
+// );
 
 // 4. LOGOUT
 router.get('/logout', (req, res, next) => {
